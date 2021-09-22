@@ -1,0 +1,55 @@
+<div class="container">
+
+    <mat-card>
+  
+      <div fxLayout="row" fxLayout.lt-md="column">
+  
+        <div fxFlex="50%">
+  
+          <mat-nav-list>
+  
+            <mat-list-item [routerLink]="['collectionApproval']" *mifosxHasPermission="'READ_LOANPRODUCT'">
+              <mat-icon matListIcon>
+                <fa-icon icon="briefcase" size="sm"></fa-icon>
+              </mat-icon>
+              <h4 matLine>Agent Collections Approvals</h4>
+              <p matLine>Agent Collections Approvals</p>
+            </mat-list-item>
+
+            <mat-list-item [routerLink]="['chargeApproval']" *mifosxHasPermission="'READ_LOANPRODUCT'">
+              <mat-icon matListIcon>
+                <fa-icon icon="briefcase" size="sm"></fa-icon>
+              </mat-icon>
+              <h4 matLine>Charges Collections Approvals</h4>
+              <p matLine>Charges Collection Approvals</p>
+            </mat-list-item>
+  
+  
+          </mat-nav-list>
+  
+        </div>
+  
+        <div fxFlex="50%">
+  
+          <mat-nav-list>
+  
+            <mat-list-item [routerLink]="['advanceApproval']">
+              <mat-icon matListIcon>
+                <fa-icon icon="briefcase" size="sm"></fa-icon>
+              </mat-icon>
+              <h4 matLine>Advance Collections Approvals</h4>
+              <p matLine>Advance Collections Approvals</p>
+            </mat-list-item>
+          
+            
+  
+          </mat-nav-list>
+  
+        </div>
+  
+      </div>
+  
+    </mat-card>
+  
+  </div>
+  

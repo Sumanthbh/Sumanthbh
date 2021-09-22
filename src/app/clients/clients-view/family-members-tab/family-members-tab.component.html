@@ -1,0 +1,70 @@
+<div class="tab-container mat-typography">
+
+  <router-outlet>
+
+    <h3>Family Members</h3>
+
+    <div fxLayout="row" fxLayoutAlign="flex-end">
+      <button mat-raised-button color="primary" [routerLink]="['./add']">
+        <fa-icon icon="plus"></fa-icon>&nbsp;&nbsp;Add
+      </button>
+    </div>
+
+    <mat-accordion>
+
+      <mat-expansion-panel *ngFor="let member of clientFamilyMembers;index as i" class="family-member">
+
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{member.firstName+' '+member.middleName+' '+member.lastName}}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{member.relationship}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-divider [inset]="true"></mat-divider>
+
+        <div class="family-member-actions" fxLayout="row" fxLayoutAlign="flex-end">
+          <button mat-button color="primary">
+            <fa-icon icon="edit" [routerLink]="[member.id,'edit']"></fa-icon>
+          </button>
+          <button mat-button color="warn" (click)="deleteFamilyMember(member.clientId,member.id,member.firstName,i)">
+            <fa-icon icon="trash"></fa-icon>
+          </button>
+        </div>
+
+        <p>
+          Name : {{member.firstName}}<br />
+          <!-- Middle Name : {{member.middleName}}<br />
+          Last Name : {{member.lastName}}<br /> -->
+          Gender : {{member.gender}}<br />
+          Age : {{member.age && member.age >0 ? member.age:''}}<br />
+          Is Dependent : {{member.isDependent? 'Yes': 'No'}}<br />
+          Occupation : {{member.profession}}<br />
+          Educational Qualification : {{member.qualification}}<br />
+          Contact : {{member.mobileNumber}}<br />
+          <div *ngIf="member.isnominee" > 
+            <p>
+              Nominee DOB : {{member.dateOfBirth? member.dateOfBirth[2] + "-" + member.dateOfBirth[1] + "-" + member.dateOfBirth[0] : ''}}<br />
+              Nominee Aadhaar : {{member.nomadhar}}<br />
+              Nominee Secondary ID Type : {{ member.nomsecondaryid | find:clientTemplate.idproofOptions:'id':'name' }}<br />
+              Nominee Secondary ID Number : {{member.nomsecondaryidnum}}<br />
+              Pin Code : {{member.nompincode}}<br />
+              State : {{(member.nomstate) | find:clientTemplate.address.stateProvinceIdOptions:'id':'name'}}<br />
+              District : {{member.nomdistrict | find:clientTemplate.address.districtIdOptions:'id':'name'}}<br />
+              Taluka : {{member.nomtaluka | find:clientTemplate.address.talukaIdOptions:'id':'name'}}<br />
+              Village/Town : {{member.nomvillage}}<br />
+              Area Locality : {{member.nomarealocality}}<br />
+              Street Number : {{member.nomstreetno}}<br />
+              House Number : {{member.nomhouseno}}
+            </p>
+          </div>  
+
+      </mat-expansion-panel>
+
+    </mat-accordion>
+
+  </router-outlet>
+
+</div>

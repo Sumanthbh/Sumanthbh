@@ -1,0 +1,39 @@
+.container {
+    max-width: 60rem;
+  }
+
+.month-contribution-label {
+  align-self: center;
+}  
+.month-contribution {
+  //  vertical-align: bottom;
+    align-self: center;
+    //text-align:justify;  
+    font-weight:bold;
+    color: rgb(34, 206, 48);
+  }
+.mat-table {
+  display: block;
+  font-family: Tahoma, Verdana;
+  width: 50%;
+}
+.tooltip-class {
+  background: black;
+  font-weight: bold;
+}
+.mat-row,
+.mat-header-row {
+  display: flex;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 24px;
+}
+
+.mat-cell,
+.mat-header-cell {
+  flex: 1;
+  overflow: hidden;
+  word-wrap: break-word;
+}

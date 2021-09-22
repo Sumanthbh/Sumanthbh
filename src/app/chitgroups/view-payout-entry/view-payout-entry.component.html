@@ -1,0 +1,325 @@
+<mat-toolbar>
+<span>Confirm the Below Details</span>
+</mat-toolbar>
+    
+<div [formGroup]="viewPayoutForm" mat-dialog-content>
+    <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+  <table>
+    <div>
+    <tr>
+      <th>Chit Name:</th>
+      <td>{{ data.PayoutEntry.chitName }}</td>
+    </tr>
+</div>
+<div>
+  <tr>
+    <th>Bid Auction Date:</th>
+    <td>{{ data.PayoutEntry.bidDate | date }}</td>
+  </tr>
+</div>
+<div>
+    <tr>
+      <th>Client Name:</th>
+      <td>{{ data.PayoutEntry.firstname }}</td>
+    </tr>
+</div>
+<div>
+    <tr>
+      <th>Subscription Payable:</th>
+      <td>{{ data.PayoutEntry.SubscriptionPayable }}/-</td>
+    </tr>
+</div>
+
+      <div  fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+        <div fxFlex="98%" fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column" formGroupName="paymentInfo">
+        <mat-form-field fxFlex="50%">
+          <mat-label>Payment Mode</mat-label>
+          <mat-select required [(ngModel)]="selectedOption" name="type" formControlName="paymentTypeId">
+            <mat-option *ngFor="let paymentMode of paymentModeOptions" [value]="paymentMode.id">
+              {{ paymentMode.name }}
+            </mat-option>
+            <mat-option style="display:none"></mat-option>
+          </mat-select>
+          <mat-error *ngIf="viewPayoutForm['controls'].paymentInfo['controls'].paymentTypeId.hasError('required')">
+            Payment Mode is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%">
+            <mat-label>Office Bank Name</mat-label>
+            <mat-select required formControlName="accId">
+              <mat-option *ngFor="let bankglAccount of bankglAccountOptions" [value]="bankglAccount.bankglAccountId">
+                {{ bankglAccount.bankglAccount }}
+              </mat-option>
+              <mat-option style="display:none"></mat-option>
+            </mat-select>
+            <mat-error *ngIf="viewPayoutForm['controls'].paymentInfo['controls'].accId.hasError('required')">
+              Office is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+  
+
+        <mat-form-field fxFlex="48%">
+          <mat-label>Transaction Date</mat-label>
+          <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="transactionDatePicker" required
+            formControlName="transactionDate">
+          <mat-datepicker-toggle matSuffix [for]="transactionDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #transactionDatePicker></mat-datepicker>
+          <mat-error *ngIf="viewPayoutForm['controls'].paymentInfo['controls'].transactionDate.hasError('required')">
+            Transaction Date is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field fxFlex="48%">
+          <mat-label>Currency</mat-label>
+          <mat-select required formControlName="currency">
+            <mat-option *ngFor="let currency of currencyData" [value]="currency.code">
+              {{ currency.displayLabel }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="viewPayoutForm['controls'].paymentInfo['controls'].currency.hasError('required')">
+            Currency is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+
+
+        <mat-form-field fxFlex="50%" *ngIf="getPaymentModeName() == 'CHEQUE'">
+          <mat-label>Cheque Amount</mat-label>
+          <input type=number required matInput formControlName="amount" />
+          <mat-error *ngIf="viewPayoutForm['controls'].paymentInfo['controls'].amount.hasError('required')">
+            Cheque Amount is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50%" *ngIf="getPaymentModeName() == 'NEFT'">
+          <mat-label> NEFT Amount</mat-label>
+          <input type=number required matInput formControlName="amount" />
+          <mat-error *ngIf="viewPayoutForm['controls'].paymentInfo['controls'].amount.hasError('required')">
+            NEFT Amount is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50%" *ngIf="getPaymentModeName() == 'RTGS'">
+          <mat-label> RTGS Amount</mat-label>
+          <input type=number required matInput formControlName="amount" />
+          <mat-error *ngIf="viewPayoutForm['controls'].paymentInfo['controls'].amount.hasError('required')">
+            RTGS Amount is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50%" *ngIf="getPaymentModeName() == 'IMPS'">
+          <mat-label> IMPS Amount</mat-label>
+          <input type=number required matInput formControlName="amount" />
+          <mat-error *ngIf="viewPayoutForm['controls'].paymentInfo['controls'].amount.hasError('required')">
+            IMPS Amount is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50%" *ngIf="getPaymentModeName() == 'CASH'">
+          <mat-label> Amount</mat-label>
+          <input type=number matInput readonly formControlName="amount" />
+          <mat-error *ngIf="viewPayoutForm['controls'].paymentInfo['controls'].amount.hasError('required')">
+            Amount is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50%" *ngIf="getPaymentModeName() == 'UPI'">
+          <mat-label> Amount</mat-label>
+          <input type=number matInput readonly formControlName="amount" />
+          <mat-error *ngIf="viewPayoutForm['controls'].paymentInfo['controls'].amount.hasError('required')">
+            UPI Amount is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50%" *ngIf="getPaymentModeName() == 'QR CODE'">
+          <mat-label> Amount</mat-label>
+          <input type=number matInput readonly formControlName="amount" />
+          <mat-error *ngIf="viewPayoutForm['controls'].paymentInfo['controls'].amount.hasError('required')">
+            Amount is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="40%">
+          <mat-label>Receipt Number</mat-label>
+          <input matInput required formControlName="receiptNumber">
+          <mat-error *ngIf="viewPayoutForm['controls'].paymentInfo['controls'].receiptNumber.hasError('required')">
+            Receipt Number is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        </div>
+      </div>
+
+
+      <!-- <mat-form-field fxFlex="48%">
+          <mat-label>Account Number</mat-label>
+          <input matInput formControlName="accountNumber">
+        </mat-form-field> -->
+      <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'CHEQUE'">
+          <mat-label>Cheque Number</mat-label>
+          <input matInput formControlName="checkNumber">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'NEFT'">
+          <mat-label>UTR Number</mat-label>
+          <input matInput formControlName="checkNumber">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'RTGS'">
+          <mat-label>UTR Number</mat-label>
+          <input matInput formControlName="checkNumber">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'IMPS'">
+          <mat-label>UTR Number</mat-label>
+          <input matInput formControlName="checkNumber">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'UPI'">
+          <mat-label>UTR Number</mat-label>
+          <input matInput formControlName="checkNumber">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'QR CODE'">
+          <mat-label>UTR Number</mat-label>
+          <input matInput formControlName="checkNumber">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'UPI'">
+          <mat-label>Transaction Number</mat-label>
+          <input matInput formControlName="transactionNo">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'QR CODE'">
+          <mat-label>Transaction Number</mat-label>
+          <input matInput formControlName="transactionNo">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'QR CODE'">
+          <mat-label>Bank Name</mat-label>
+          <input matInput formControlName="bankNumber">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'UPI'">
+          <mat-label>Bank Name</mat-label>
+          <input matInput formControlName="bankNumber">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'IMPS'">
+          <mat-label>Bank Name</mat-label>
+          <input matInput formControlName="bankNumber">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'RTGS'">
+          <mat-label>Bank Name</mat-label>
+          <input matInput formControlName="bankNumber">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'NEFT'">
+          <mat-label>Bank Name</mat-label>
+          <input matInput formControlName="bankNumber">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'CHEQUE'">
+          <mat-label>Bank Name</mat-label>
+          <input matInput formControlName="bankNumber">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'QR CODE'">
+          <mat-label>Branch Name</mat-label>
+          <input matInput formControlName="routingCode">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'CHEQUE'">
+          <mat-label>Branch Name</mat-label>
+          <input matInput formControlName="routingCode">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'UPI'">
+          <mat-label>Branch Name</mat-label>
+          <input matInput formControlName="routingCode">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'IMPS'">
+          <mat-label>Branch Name</mat-label>
+          <input matInput formControlName="routingCode">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'RTGS'">
+          <mat-label>Branch Name</mat-label>
+          <input matInput formControlName="routingCode">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'NEFT'">
+          <mat-label>Branch Name</mat-label>
+          <input matInput formControlName="routingCode">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'CHEQUE'">
+          <mat-label>Deposited Date</mat-label>
+          <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="depositedDatePicker"
+            formControlName="depositedDate">
+          <mat-datepicker-toggle matSuffix [for]="depositedDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #depositedDatePicker></mat-datepicker>
+          <mat-error *ngIf="viewPayoutForm['controls'].paymentInfo['controls'].depositedDate.hasError('required')">
+            Deposited Date is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'NEFT'">
+          <mat-label>NEFT Date</mat-label>
+          <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="depositedDatePicker"
+            formControlName="depositedDate">
+          <mat-datepicker-toggle matSuffix [for]="depositedDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #depositedDatePicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'RTGS'">
+          <mat-label>RTGS Date</mat-label>
+          <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="depositedDatePicker"
+            formControlName="depositedDate">
+          <mat-datepicker-toggle matSuffix [for]="depositedDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #depositedDatePicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'IMPS'">
+          <mat-label>IMPS Date</mat-label>
+          <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="depositedDatePicker"
+            formControlName="depositedDate">
+          <mat-datepicker-toggle matSuffix [for]="depositedDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #depositedDatePicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'UPI'">
+          <mat-label> UPI Date</mat-label>
+          <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="depositedDatePicker"
+            formControlName="depositedDate">
+          <mat-datepicker-toggle matSuffix [for]="depositedDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #depositedDatePicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="48%" *ngIf="getPaymentModeName() == 'QR CODE'">
+          <mat-label>QR Date</mat-label>
+          <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="depositedDatePicker"
+            formControlName="depositedDate">
+          <mat-datepicker-toggle matSuffix [for]="depositedDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #depositedDatePicker></mat-datepicker>
+        </mat-form-field>
+
+        <!-- <mat-form-field fxFlex="90%">
+          <mat-label>Notes</mat-label>
+          <textarea rows="3" matInput  formControlName="paymentNote"></textarea>
+        </mat-form-field> -->
+
+      </div>
+
+  </table>
+  </div>
+
+</div>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button (click)="onClose()" color="primary">Close</button><button mat-raised-button (click)="subPayout()" color="primary">Pay Now</button>
+</mat-dialog-actions>

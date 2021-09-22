@@ -1,0 +1,20 @@
+.scroll{
+    display: flex;
+    overflow-x: auto;
+}
+
+.daily{
+    background-color: #d4ffef;
+}
+.month{
+    background-color: #c6e6fb;
+}
+.till{
+    background-color: #e5ded5;
+}
+mat-header-cell, mat-cell {
+    min-width: 150px;
+    margin-left: 5px;
+    margin-right: 5px;
+    text-align: center;
+}

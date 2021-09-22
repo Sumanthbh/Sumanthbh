@@ -1,0 +1,73 @@
+.table {
+  border: 1px;
+}
+.table-row {
+  border: 2px;
+  border-color: red;
+}
+.table-inputgreen {
+  margin: 2px;
+  background-color: lightgreen;
+  text-align:right;
+  //border:0.25px solid;
+}
+.table-inputblue {
+  margin: 2px;
+  background-color:lightskyblue;
+  text-align:right;
+  //border:0.25px solid;
+}
+.table-inputpeach {
+  margin: 2px;
+  background-color:peachpuff;
+  text-align:right;
+  //border:0.5px solid;
+}
+// .table-inputgrey {
+//   background-color:rgb(211, 203, 195);
+//   align-items: flex-end;
+//   text-align:right;
+//   //border:0.5px solid;
+// }
+.table-fieldText {
+  background-color:rgb(223, 218, 245);
+  //border:0.5px solid;
+}
+.header {
+  padding: 1px;
+  font-size:12.0pt;
+  font-weight:bolder;
+  font-style:normal;
+  align-items: center;
+  vertical-align:middle;
+//  border:1px solid;
+}
+.table-h3 {
+  margin: 2px;
+  font-size:11.0pt;
+  font-weight:bolder;
+//  border:1px solid;
+}
+.data {
+  margin: 2px;
+  font-size:11.0pt;
+  font-weight:normal;
+//  border:1px solid;
+}
+.table-rightCell {
+  margin: 2px;
+  align-items: flex-end;
+  align-content: flex-end;
+  align-self:flex-end;
+  //border:0.5px solid;
+}
+
+.address {
+  h3 {
+    margin: 1% auto;
+  }
+  p {
+    line-height: 30px;
+    margin-left: 2%;
+  }
+}

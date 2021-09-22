@@ -1,0 +1,35 @@
+<div class="mat-elevation-z8">
+    <h3 style="text-align: center">Group Subscriber List</h3>
+  <table mat-table [dataSource]="dataSource">
+
+   <ng-container matColumnDef="ChitNumber">
+      <th mat-header-cell *matHeaderCellDef> Ticket Number </th>
+      <td mat-cell *matCellDef="let subscriber"> {{ subscriber.ChitNumber }} </td>
+    </ng-container> 
+
+    <ng-container matColumnDef="ClientName">
+      <th mat-header-cell *matHeaderCellDef > Subscriber Name </th>
+      <td mat-cell *matCellDef="let subscriber"> {{ subscriber.ClientName }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="PayableAmount">
+      <th mat-header-cell *matHeaderCellDef> Total Demand </th>
+      <td mat-cell *matCellDef="let subscriber"> {{ subscriber.PayableAmount }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="totalDue">
+      <th mat-header-cell *matHeaderCellDef> Total Amount Due </th>
+      <td mat-cell *matCellDef="let subscriber"> {{ subscriber.amount }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="totalCollection">
+      <th mat-header-cell *matHeaderCellDef> Total Amount Collected</th>
+      <td mat-cell *matCellDef="let subscriber"> {{ subscriber.amount }} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="select-row" [routerLink]="[row.id]"></tr> -->
+    
+  </table>
+  <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+</div>

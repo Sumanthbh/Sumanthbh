@@ -1,0 +1,66 @@
+<mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</mat-form-field>
+<div class="scroll">
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort >
+        <ng-container matColumnDef="BranchName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header><strong> Branch Name </strong></mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.BranchName}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="CustomerName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header><strong> Customer Name </strong></mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.CustomerName}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="DailyDemandToday">
+          <mat-header-cell *matHeaderCellDef class="daily"><strong> Daily Demand </strong></mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.DailyDemandToday}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="CollectionAsOnTodayToday">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="daily"><strong>Daily Collection</strong> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.CollectionAsOnTodayToday}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="ShortFallToday">
+          <mat-header-cell *matHeaderCellDef class="daily"><strong >ShortFall/Advance</strong> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.ShortFallToday}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="PercentageToday">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="daily"> <strong>Percentage(%) </strong></mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.PercentageToday}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="empty1">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="DailyDemandCurrentMonth">
+          <mat-header-cell *matHeaderCellDef class="month"><strong> Daily Demand</strong> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.DailyDemandCurrentMonth}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="CollectionAsOnTodayCurrentMonth">
+          <mat-header-cell *matHeaderCellDef class="month"><strong>Daily Collection</strong> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.CollectionAsOnTodayCurrentMonth}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="ShortFallCurrentMonth">
+          <mat-header-cell *matHeaderCellDef class="month"> <strong>Penalty Amount</strong> </mat-header-cell>
+          <mat-cell *matCellDef="let element" > {{element.ShortFallCurrentMonth}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="PercentageCurrentMonth">
+          <mat-header-cell *matHeaderCellDef class="month"> <strong>ShortFall/Advance</strong> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.PercentageCurrentMonth}} </mat-cell>
+        </ng-container>
+  
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>  
+    
+</div>
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons> </mat-paginator>

@@ -1,0 +1,33 @@
+<div class="container">
+    <form [formGroup]="chitchargeForm">
+        <mat-card>
+          <mat-card-content>
+            <div fxFlexFill fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+
+                <h3 fxFlex="98%" class="mat-h3">Create Chit Charges Configuration</h3>
+
+                <mat-form-field fxFlex="30%">
+                  <mat-label>Charge Name</mat-label>
+                  <input matInput required formControlName="name">
+                  <mat-error *ngIf="chitchargeForm.controls.name.hasError('required')">
+                    Charge Name is <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="30%">
+                  <mat-label>Amount</mat-label>
+                  <input matInput formControlName="amount">
+                </mat-form-field>
+
+                <mat-checkbox formControlName="isEnabled" labelPosition="before" fxFlex="20%">Activate</mat-checkbox>
+
+                
+            </div>
+          </mat-card-content>
+          <mat-card-actions fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="5px">
+            <button type="button" mat-raised-button [routerLink]="['../']">Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="!chitchargeForm.valid" (click)="submit()">Submit</button>
+          </mat-card-actions>
+        </mat-card>  
+    </form>    
+</div>

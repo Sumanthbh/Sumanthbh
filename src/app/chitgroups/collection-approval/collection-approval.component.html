@@ -1,0 +1,106 @@
+
+<div class="container">
+
+  <mat-card>
+        
+    <form [formGroup]="collApproveHeaderForm">
+      <mat-card-content>
+        <div fxFlexFill fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+          <mat-form-field fxFlex="20%">
+            <mat-label>Branch</mat-label>
+            <mat-select required formControlName="officeId">
+              <mat-option *ngFor="let office of officeOptions" [value]="office.id">
+                {{ office.name }}
+              </mat-option>
+            </mat-select>
+            <!-- <mat-error *ngIf="collApproveForm.controls.officeId.hasError('required')">
+              Office is <strong>required</strong>
+            </mat-error> -->
+          </mat-form-field>
+
+          <mat-form-field fxFlex="30%">
+            <mat-label>Agent</mat-label>
+            <mat-select formControlName="staffId">
+              <mat-option *ngFor="let staff of staffOptions" [value]="staff.id">
+                {{ staff.displayName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field fxFlex="22%">
+            <mat-label>Date</mat-label>
+            <input matInput required [max]="maxDate" [min]="minDate" [matDatepicker]="collectionDatePicker" formControlName="date">
+            <mat-datepicker-toggle matSuffix [for]="collectionDatePicker"></mat-datepicker-toggle>
+            <!-- <mat-error *ngIf="collApproveForm.controls.date.hasError('required')">
+              Field is <strong>required</strong>
+            </mat-error> -->
+            <mat-datepicker #collectionDatePicker></mat-datepicker>
+          </mat-form-field>
+          <button mat-raised-button color="primary" [disabled]="!(this.collApproveHeaderForm.controls['staffId'].valid && this.collApproveHeaderForm.controls['date'].valid)" class="loadButton" (click)="getCollections()">
+            Show Collections
+          </button>
+    
+          <!-- <button mat-button (click)="getCollections()">
+            Show Collections
+          </button> -->
+
+        </div>
+
+      <div style="border-width: 2px solid;"  *ngFor="let group of collectionData; let i = index;">
+
+        <!--  <div fxFlexFill style="border-width: 2px solid; border-color: red;" fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column" [formGroupName]="i"> -->
+        <h4>{{group.paymentMode}}   : ₹ {{group.subTotalAmount}}</h4>
+        <table mat-table [dataSource]="group.formArray" matSort>
+
+          <ng-container matColumnDef="chitGroup">
+            <th mat-header-cell *matHeaderCellDef > Chit Group </th>
+            <td mat-cell *matCellDef="let collections"> {{ collections.value.chitGroup.value }} </td>
+          </ng-container>
+          <ng-container matColumnDef="client">
+            <th mat-header-cell *matHeaderCellDef > Client </th>
+            <td mat-cell *matCellDef="let collections"> {{ collections.value.client.value }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef > Amount </th>
+            <td mat-cell *matCellDef="let collections"> {{ collections.value.amount.value }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="RecieptNumber">
+            <th mat-header-cell *matHeaderCellDef > Reciept Number </th>
+            <td mat-cell *matCellDef="let collections"> {{ collections.value.RecieptNumber.value }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef > Transaction Id </th>
+            <td mat-cell *matCellDef="let collections"> {{ collections.value.id.value }} </td>
+          </ng-container>
+
+          <ng-container  matColumnDef="creditedAmount">
+            <th mat-header-cell *matHeaderCellDef > Credited Amount </th>
+            <td mat-cell *matCellDef="let collections">
+              <input required matInput type="number" style="width:2in; text-align: right; background-color: rgb(218, 216, 213);" value={{collections.value.amount.value}} (change)="changeCreditedAmount(collections, $event.target.value)">
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="process">
+            <th mat-header-cell *matHeaderCellDef > Process </th>
+            <td mat-cell *matCellDef="let collections">
+              <mat-checkbox class="active" checked="true" (change)="changeProcessCheckBox(collections)" ></mat-checkbox>
+             </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"  class="header-row"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="select-row"></tr>
+      
+        </table>
+      </div>
+
+      </mat-card-content>
+      <mat-card-actions fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="5px">
+        <!-- <button type="button" mat-raised-button (click)="submit()">Cancel</button> -->
+        <button mat-raised-button color="primary"  (click)="collapproval()">Submit</button>
+      </mat-card-actions>
+
+    </form>
+
+  </mat-card>
+
+</div>

@@ -1,0 +1,58 @@
+<div class="container">
+    <mat-card>
+        <div fxFlexFill fxLayout="row wrap" fxLayoutGap="5%" fxLayout.lt-md="column">
+          <h3 fxFlex="78%" class="mat-h3">Chit Charges Configuration</h3>
+          <div class="action-button" fxLayoutGap="25px">
+            <button mat-raised-button color="primary" fxLayoutGap="20px" [routerLink]="['create']">
+               <fa-icon icon="plus"></fa-icon>&nbsp;&nbsp;Create Charges
+            </button>
+          </div>
+        </div>
+        
+        <div fxLayout="row" fxLayoutGap="20px">
+          <mat-form-field fxFlex>
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyFilter($event.target.value)">
+          </mat-form-field>
+        </div>
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="dataSource" matSort>
+
+           <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef> Charge Number </th>
+              <td mat-cell *matCellDef="let charge"> {{ charge.id }} </td>
+            </ng-container> 
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef > Charge Name </th>
+              <td mat-cell *matCellDef="let charge"> {{ charge.name }} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef> Amount </th>
+              <td mat-cell *matCellDef="let charge"> {{ charge.amount }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="isEnabled">
+              <th mat-header-cell *matHeaderCellDef> Action </th>
+              <td mat-cell *matCellDef="let charge">
+                 {{ charge.isEnabled? 'Active':'Disabled' }}
+                 <!-- <button mat-button *ngIf="!charge.isEnabled" color="accent" (click)="toggleStatus(charge)">
+                  <fa-icon icon="lock-open"></fa-icon>&nbsp;&nbsp;Enable
+                </button>
+                <button mat-button *ngIf="charge.isEnabled" color="warn" (click)="toggleStatus(charge)">
+                  <fa-icon icon="lock"></fa-icon>&nbsp;&nbsp;Disable
+                </button> -->
+                 </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="select-row" [routerLink]="[row.id]"></tr>
+            
+          </table>
+          <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+        </div>
+      
+    </mat-card>
+
+</div>

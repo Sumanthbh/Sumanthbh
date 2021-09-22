@@ -1,0 +1,40 @@
+<div class="tab-container mat-typography">
+    <h3>Guarantor Details</h3>
+
+    <div fxLayout="row" fxLayoutAlign="flex-end">
+      <button mat-raised-button color="primary" [routerLink]="['./add']">
+        <fa-icon icon="plus"></fa-icon>&nbsp;&nbsp;Add
+      </button>
+    </div>
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let guarantor of guarantorsData;index as i" class="guarantor">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{guarantor.firstName}}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{guarantor.relationshipType}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-divider [inset]="true"></mat-divider>
+
+        <div class="guarantor-actions" fxLayout="row" fxLayoutAlign="flex-end">
+          <!-- <button mat-button color="primary">
+            <fa-icon icon="edit" [routerLink]="[guarantor.id,'edit']"></fa-icon>
+          </button> -->
+          <button mat-button color="warn" (click)="deleteGuarantor(guarantor.id,guarantor.firstName,i)">
+            <fa-icon icon="trash"></fa-icon>
+          </button>
+        </div>
+
+        <p>
+          Name : {{guarantor.firstName}}<br />
+          Type : {{guarantor.typeEnum}}<br />
+          Contact : {{guarantor.Phone}}<br />
+          Educational Qualification : {{guarantor.qualificationtype}}<br />
+          profession : {{guarantor.professionType}}<br />
+          Is Active : {{guarantor.isActive? 'Yes': 'No'}}<br />
+      </mat-expansion-panel>
+    </mat-accordion>
+</div>

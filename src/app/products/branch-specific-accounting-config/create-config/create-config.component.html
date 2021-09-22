@@ -1,0 +1,50 @@
+<div class="container">
+    <form [formGroup]="branchspecificForm">
+        <mat-card>
+          <mat-card-content>
+            <div fxFlexFill fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+
+                <h3 fxFlex="98%" class="mat-h3">Create Branch Specific Configuration</h3>
+
+                <mat-form-field fxFlex="30%">
+                    <mat-label>Branch</mat-label>
+                    <mat-select required formControlName="branchId">
+                      <mat-option *ngFor="let office of unconfiguredData" [value]="office.id">
+                      {{ office.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="branchspecificForm.controls.branchId.hasError('required')">
+                      Branch is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field >
+                <mat-form-field fxFlex="30%">
+                  <mat-label>Cash</mat-label>
+                  <mat-select required formControlName="cashglAccountId">
+                    <mat-option *ngFor="let cash of cashData" [value]="cash.id">
+                      {{cash.name}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="branchspecificForm.controls.cashglAccountId.hasError('required')">
+                    Branch is <strong>required</strong>
+                  </mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex="30%">
+                <mat-label>Bank</mat-label>
+                <mat-select required formControlName="bankglAccountId">
+                  <mat-option *ngFor="let bank of bankData" [value]="bank.id">
+                    {{bank.name}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="branchspecificForm.controls.bankglAccountId.hasError('required')">
+                  Branch is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </mat-card-content>
+          <mat-card-actions fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="5px">
+            <button type="button" mat-raised-button [routerLink]="['../']">Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="!branchspecificForm.valid" (click)="submit()">Submit</button>
+          </mat-card-actions>
+        </mat-card>  
+    </form>    
+</div>

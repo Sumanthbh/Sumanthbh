@@ -1,0 +1,47 @@
+<div class="container">
+
+  <mat-card>
+    <form [formGroup] = "CibilCheckForm">
+    <mat-card-content>
+      <h3 style="text-align: center;" >Please ensure the following details are Selected</h3>
+      <div fxLayout="row wrap"  fxLayoutGap="2%" fxLayout.lt-md="column" fxLayoutAlign="center">
+        
+        
+          <mat-checkbox formControlName="Adhar">Adhar</mat-checkbox>
+         
+          <mat-checkbox formControlName="Mobile">Mobile</mat-checkbox>
+
+          <mat-checkbox formControlName="Address">Address</mat-checkbox>
+
+          <mat-checkbox formControlName="SecondaryProofID">Secondary Proof ID</mat-checkbox>
+          
+      </div>
+      <div fxLayoutAlign="center">
+
+        <mat-form-field fxFlex="20%">
+          <mat-label>Chit Amount Applied</mat-label>
+          <mat-select required formControlName="LoanAmount">
+            <mat-option *ngFor="let AmountApplied of AmountAppliedOptions" [value]="AmountApplied.id">
+              {{ AmountApplied.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="CibilCheckForm.controls.LoanAmount.hasError('required')">
+            Field is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <!-- <mat-form-field fxFlex="26%">
+          <mat-label>Applied Chit Amount</mat-label>
+          <input type="number" matInput formControlName="LoanAmount"/>
+        </mat-form-field> -->
+      </div>
+    </mat-card-content>
+      <mat-card-actions fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="5px">
+       
+        <button mat-raised-button class ="verifyButton" [disabled] = "!validation()" color="primary" (click)="verifycibil()">Verify</button>
+      </mat-card-actions>
+
+    </form>
+  </mat-card>
+
+</div>    
+

@@ -1,0 +1,535 @@
+<div class="container">
+
+  <mat-card>
+
+    <form [formGroup]="chitgroupForm">
+
+      <mat-card-content>
+        <mat-tab-group mat-stretch-tabs animationDuration="0ms">
+          <mat-tab label="Chit Details">
+     
+            <div fxLayout="row wrap" fxLayoutGap="5%" fxLayout.lt-md="column">
+
+            <mat-form-field>
+              <mat-label>Chit Group Name</mat-label>
+              <input matInput required formControlName="name">
+              <mat-error *ngIf="chitgroupForm.controls.name.hasError('required')">
+                Chit Group Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Branch</mat-label>
+              <mat-select disabled=true formControlName="officeId">
+                <mat-option *ngFor="let office of officeData" [value]="office.id">
+                {{ office.name }}
+                </mat-option>
+              </mat-select>
+              <!-- <mat-error *ngIf="chitgroupForm.controls.officeId.hasError('required')">
+                Branch is <strong>required</strong>
+              </mat-error> -->
+            </mat-form-field>
+
+            <!-- <mat-form-field>
+              <mat-label>Staff</mat-label>
+              <mat-select formControlName="staffid">
+                <mat-option *ngFor="let staff of staffData" [value]="staff.id">
+                {{ staff.displayName }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field> -->
+
+            <mat-form-field>
+              <mat-label>Start Date</mat-label>
+              <input matInput [min]="startminDate" [max]="startmaxDate" [matDatepicker]="chitStartDatePicker" required formControlName="startdate">
+              <mat-datepicker-toggle matSuffix [for]="chitStartDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #chitStartDatePicker></mat-datepicker>
+              <mat-error *ngIf="chitgroupForm.controls.startdate.hasError('required')">
+                Start Date is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="chitgroupForm.controls.startdate.hasError('matDatepickerMin') || chitgroupForm.controls.startdate.hasError('matDatepickerMax')">
+                Date is not valid.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Chit Cycle Frequency</mat-label>
+              <mat-select required formControlName="chitcyclefrequency">
+                <mat-option *ngFor="let freq of cyclefrequencyOptions" [value]="freq.id">
+                {{ freq.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="chitgroupForm.controls.chitcyclefrequency.hasError('required')">
+                Cycle Frequency is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Collection Frequency</mat-label>
+              <mat-select required formControlName="chitcollectionfrequency">
+                <mat-option *ngFor="let freq of collectionfrequencyOptions" [value]="freq.id">
+                {{ freq.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="chitgroupForm.controls.chitcollectionfrequency.hasError('required')">
+                Collection Frequency is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <!-- <mat-form-field  fxFlex="28%">
+              <mat-label>Auction Day</mat-label>
+              <input type="text" matInput required formControlName="auctionday">
+              <mat-error *ngIf="chitgroupForm.controls.auctionday.hasError('required')">
+                Auction Day is <strong>required</strong>
+              </mat-error>
+            </mat-form-field> -->
+          </div>
+          <br/>
+          <div style=" background-color: rgb(243, 237, 237); max-width: 70%;">
+            <section>
+              <mat-label>Select Auction Day as</mat-label><br/>
+              <mat-button-toggle-group formControlName= "auctionday" aria-label="Select Type">
+                <mat-button-toggle style="color: blue;" value="CalDay"
+                  matTooltip="If Auction is held on a specific Date, then click Calendar Day and select a day of Month. For e.g. If 5 is selected, that means Auction happens 5th of every month" matTooltipClass="tooltip-class"
+                >Calendar Day</mat-button-toggle>
+                <mat-button-toggle style="color: orange;" value="FlexDay"
+                  matTooltip="Select Flexible Day, if Auction is conducted on specific weekday every month, like 1st/2nd Monday. For e.g. if Second and Saturday is selected, that means Auction happens on 2nd Saturday every month" matTooltipClass="tooltip-class"
+                >Flexible Day</mat-button-toggle>
+              </mat-button-toggle-group>
+              <!-- <p>Chosen value is {{chitgroupForm.value.auctionday}}</p> -->
+            </section>
+
+            <!-- <mat-radio-group fxLayout="row" fxLayoutGap="5%" fxLayout.lt-md="column"
+              formControlName="auctionday">
+              <mat-radio-button *ngFor="let auctiondayType of auctionDayTypes; let i =  index" [value]="i+1">
+                {{ auctionDayType }}
+              </mat-radio-button>
+            </mat-radio-group> -->
+
+            <!-- <mat-selection-list fxFlex="28%" (multiple)="false">
+              <mat-list-option class="horizontal-mat-list-item" *ngFor="let calendarday of calendarDaysArry" (value)="calendarday">
+                {{calendarday}}
+              </mat-list-option>
+            </mat-selection-list> -->
+            <div *ngIf="chitgroupForm.value.auctionday === 'CalDay'" fxFlexFill fxLayout="row wrap"
+            fxLayoutGap="2%" fxLayout.lt-md="column">
+
+              <mat-form-field >
+                <mat-label style="color: blue;">Select Date</mat-label>
+                <mat-select formControlName="auctiondayValue">
+                  <mat-option *ngFor="let calendarday of calendarDaysArry" [value]="calendarday">
+                  {{ calendarday }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field  fxFlex="28%">
+                <mat-label>Auction Time</mat-label>
+                <input type="time" matInput required formControlName="auctiontime">
+                <mat-error *ngIf="chitgroupForm.controls.auctiontime.hasError('required')">
+                  Auction Time is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            
+            </div>
+
+            <div *ngIf="chitgroupForm.value.auctionday === 'FlexDay'" fxFlexFill fxLayout="row wrap"
+            fxLayoutGap="2%" fxLayout.lt-md="column">
+
+              <mat-form-field>
+                <mat-label style="color: orange;">Select a Day Type</mat-label>
+                <mat-select formControlName="auctiondayType">
+                  <mat-option *ngFor="let daytype of dayTypeArry" [value]="daytype">
+                  {{ daytype }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              
+              <mat-form-field>
+                <mat-label style="color: orange;">Select Day</mat-label>
+                <mat-select formControlName="auctionweekValue">
+                  <mat-option *ngFor="let weekDaytype of weekDayArry" [value]="weekDaytype">
+                  {{ weekDaytype }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field  fxFlex="28%">
+                <mat-label>Auction Time</mat-label>
+                <input type="time" [max]="'01:23PM'" matInput required formControlName="auctiontime">
+                <mat-error *ngIf="chitgroupForm.controls.auctiontime.hasError('required')">
+                  Auction Time is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+              
+            </div>
+            <br/>
+          </div>  
+          <div fxLayout="row wrap" fxLayoutGap="5%" fxLayout.lt-md="column">
+
+            <mat-form-field  fxFlex="28%">
+              <mat-label>Chit Duration</mat-label>
+              <input type="number" matInput required formControlName="chitduration">
+              <mat-error *ngIf="chitgroupForm.controls.chitduration.hasError('required')">
+                Chit Duration is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="chitgroupForm.controls.chitduration.hasError('pattern')">
+                Enter Numbers <strong>only</strong>. Maximum 2 digits.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field  fxFlex="28%">
+              <mat-label>Chit Value</mat-label>
+              <input type="text" matInput required formControlName="chitvalue">
+              <mat-error *ngIf="chitgroupForm.controls.chitvalue.hasError('required')">
+                Chit Value is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-label class="month-contribution-label">Monthly Contribution </mat-label>
+            <mat-label class="month-contribution"> ₹ {{getMonthlyContribution()}}</mat-label>
+            <!-- <mat-form-field  fxFlex="28%">
+            <mat-label class="month-contribution"> ₹ {{ chitgroupForm.controls.chitvalue.value? (chitgroupForm.controls.chitDuration.value? (chitgroupForm.controls.chitvalue.value/chitgroupForm.controls.chitDuration.value).toFixed() : '0') : '0'}}</mat-label>  
+              <mat-label>{{ chitgroupForm.controls.chitvalue.value? (chitgroupForm.controls.chitDuration.value? chitgroupForm.controls.chitvalue.value/chitgroupForm.controls.chitDuration.value : '') : ''}}</mat-label>
+              <input type="number" matInput readonly>
+            </mat-form-field> -->
+
+            <!-- <mat-label>{{chitgroupForm.controls.chitvalue.value/chitgroupForm.controls.chitDuration.value}}</mat-label> -->
+
+
+            <mat-form-field  fxFlex="28%">
+              <mat-label>Enrollment Fee</mat-label>
+              <input type="number" matInput required formControlName="enrollmentFees">
+              <mat-error *ngIf="chitgroupForm.controls.enrollmentFees.hasError('required')">
+                Enrollment Fee is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="chitgroupForm.controls.enrollmentFees.hasError('pattern')">
+                Enter Numbers <strong>only</strong>. Maximum 10 digits.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field  fxFlex="28%">
+              <mat-label>Minimum Bid %</mat-label>
+              <input type="number" matInput required formControlName="minBidPerct"
+              matTooltip="Example: For 6.5%, Enter just 6.5 without % sign" matTooltipClass="tooltip-class">
+              <mat-error *ngIf="chitgroupForm.controls.minBidPerct.hasError('required')">
+                Minimum Bid is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="chitgroupForm.controls.minBidPerct.hasError('pattern')">
+                Enter value in format <strong>xx.yy</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field  fxFlex="28%">
+              <mat-label>Maximum Bid %</mat-label>
+              <input type="number" matInput required formControlName="maxBidPerct">
+              <mat-error *ngIf="chitgroupForm.controls.maxBidPerct.hasError('required')">
+                Maximum Bid is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="chitgroupForm.controls.maxBidPerct.hasError('pattern')">
+                Enter value in format <strong>xx.yy</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field  fxFlex="28%">
+              <mat-label>Prized Member Penalty %</mat-label>
+              <input type="number" matInput formControlName="prizMemPenPerct">
+              <!-- <mat-error *ngIf="chitgroupForm.controls.prizMemPenPerct.hasError('required')">
+                Prized Member Penalty is <strong>required</strong>
+              </mat-error> -->
+              <mat-error *ngIf="chitgroupForm.controls.prizMemPenPerct.hasError('pattern')">
+                Enter value in format <strong>xx.yy</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field  fxFlex="28%">
+              <mat-label>Non-Prized Member Penalty %</mat-label>
+              <input type="number" matInput formControlName="nonPrizMemPenPerct">
+              <!-- <mat-error *ngIf="chitgroupForm.controls.nonPrizMemPenPerct.hasError('required')">
+                Non-Prized Member Penalty is <strong>required</strong>
+              </mat-error> -->
+              <mat-error *ngIf="chitgroupForm.controls.nonPrizMemPenPerct.hasError('pattern')">
+                Enter value in format <strong>xx.yy</strong>
+              </mat-error>
+            </mat-form-field>
+            
+          </div>
+        </mat-tab>
+
+        <mat-tab label="FDR Details">
+          <div fxLayout="row wrap" fxLayoutGap="5%" fxLayout.lt-md="column">
+
+            <mat-form-field fxFlex="28%">
+              <mat-label>FDR Account Number</mat-label>
+              <input matInput formControlName="fdrAcNumber">
+              <mat-error *ngIf="chitgroupForm.controls.fdrAcNumber.hasError('required')">
+                FDR Account Number is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="28%">
+              <mat-label>FDR Issued Date</mat-label>
+              <input matInput [min]="fdrIssueMinDate" [max]="fdrIssueMaxDate" [matDatepicker]="FDRIssueDatePicker" formControlName="fdrIssueDate" (dateChange)="calcFDRMatuDate()">
+              <mat-datepicker-toggle matSuffix [for]="FDRIssueDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #FDRIssueDatePicker></mat-datepicker>
+              <mat-error *ngIf="chitgroupForm.controls.fdrIssueDate.hasError('required')">
+                FDR Date is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="chitgroupForm.controls.fdrIssueDate.hasError('matDatepickerMin') || chitgroupForm.controls.fdrIssueDate.hasError('matDatepickerMax')">
+                Date is not valid.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field  fxFlex="28%">
+              <mat-label>Deposited Amount</mat-label>
+              <input type="text" matInput formControlName="fdrDepAmount" (change)="formatDepAmount()">
+              <mat-error *ngIf="chitgroupForm.controls.fdrDepAmount.hasError('required')">
+                Deposited Amount is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field  fxFlex="20%">
+              <mat-label>Duration (in months)</mat-label>
+              <input type="number" matInput formControlName="fdrDuration" (change)="calcFDRMatuDate()">
+              <mat-error *ngIf="chitgroupForm.controls.fdrDuration.hasError('required')">
+                Duration is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="chitgroupForm.controls.fdrDuration.hasError('pattern')">
+                Enter Numbers <strong>only</strong>. Maximum 2 digits.
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field  fxFlex="20%">
+              <mat-label>Rate of Interest %</mat-label>
+              <input type="number" matInput formControlName="fdrRatIntPerct">
+              <mat-error *ngIf="chitgroupForm.controls.fdrRatIntPerct.hasError('required')">
+                Rate of Interest is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="chitgroupForm.controls.fdrRatIntPerct.hasError('pattern')">
+                Enter value in format <strong>xx.yy</strong>
+              </mat-error>
+            </mat-form-field>
+          
+            <mat-form-field  fxFlex="28%">
+              <mat-label>Interest Amount</mat-label>
+              <input type="text" matInput formControlName="fdrRateIntAmt" (change)="formatIntAmount()">
+              <mat-error *ngIf="chitgroupForm.controls.fdrRateIntAmt.hasError('required')">
+                Interest Amount is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field fxFlex="28%">
+              <mat-label>Interest Payable cycle</mat-label>
+              <mat-select formControlName="fdrIntPayCycle">
+                <mat-option *ngFor="let freq of intPayableCycleOptions" [value]="freq.id">
+                {{ freq.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="chitgroupForm.controls.fdrIntPayCycle.hasError('required')">
+                Interest Payable cycle is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="28%">
+              <mat-label>Maturity Date</mat-label>
+              <input matInput [min]="fdrMatuMinDate" readonly [max]="fdrMatuMaxDate" [matDatepicker]="FDRMaturityDatePicker" formControlName="fdrMatuDate">
+              <mat-datepicker-toggle matSuffix [for]="FDRMaturityDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker  #FDRMaturityDatePicker></mat-datepicker>
+              <mat-error *ngIf="chitgroupForm.controls.fdrMatuDate.hasError('required')">
+                Maturity Date is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="chitgroupForm.controls.fdrMatuDate.hasError('matDatepickerMin') || chitgroupForm.controls.fdrMatuDate.hasError('matDatepickerMax')">
+                Date is not valid.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field  fxFlex="28%">
+              <mat-label>Maturity Amount</mat-label>
+              <input type="text" matInput readonly formControlName="fdrMatuAmount">
+              <mat-error *ngIf="chitgroupForm.controls.fdrMatuAmount.hasError('required')">
+                Maturity Amount is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field  fxFlex="40%">
+              <mat-label>Bank Name</mat-label>
+              <input type="text" matInput formControlName="fdrBankName">
+              <mat-error *ngIf="chitgroupForm.controls.fdrBankName.hasError('required')">
+                Bank Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field  fxFlex="40%">
+              <mat-label>Branch</mat-label>
+              <input type="text" matInput formControlName="fdrBankBranchName">
+              <mat-error *ngIf="chitgroupForm.controls.fdrBankBranchName.hasError('required')">
+                Branch Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="40%" *ngIf="!fdrFileExists">
+              <mat-label>FDR Certificate Copy</mat-label>
+              <input matInput style="border: 1px;"  formControlName="fdrCertFile" [value]="fdrFileName || ''" placeholder="No file selected">
+              <input type="file" #uploadFile (change)="onFDRFileSelect($event)" [style.display]="'none'">
+              <span fxFlex="10%" fxFlexAlign="center">
+                <button mat-button (click)="uploadFile.click()">
+                  <fa-icon icon="folder-open" size="lg"></fa-icon>
+                  &nbsp;&nbsp;
+                  Browse
+                </button>
+              </span>
+              <mat-error *ngIf="chitgroupForm.controls.fdrCertFile.hasError('required')">
+                Certificate File is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="40%" *ngIf="fdrFileExists">
+              <mat-label>FDR Certificate Copy</mat-label>
+              <input matInput readonly  [value]="fdrFileName">
+              <span fxFlex="10%" fxFlexAlign="flex-start">
+                <button class="document-action-button" mat-raised-button color="primary" (click)="download('FDR')">
+                  <fa-icon icon="cloud-download-alt"></fa-icon>
+                </button>
+              </span>
+              <span fxFlex="5%" fxFlexAlign="flex-end">
+                  <button class="document-action-button" mat-raised-button color="warn" (click)="deleteDocument('FDR')">
+                  <fa-icon icon="times"></fa-icon>
+                </button>
+              </span>
+            </mat-form-field>
+
+          </div>
+
+
+        </mat-tab>
+        <mat-tab label="PSO & CC Details">
+          <div fxLayout="row wrap" fxLayoutGap="5%" fxLayout.lt-md="column">
+            <mat-form-field fxFlex="28%">
+              <mat-label>PSO Application Date</mat-label>
+              <input matInput [matDatepicker]="PSOAppDatePicker" formControlName="psoAppDate">
+              <mat-datepicker-toggle matSuffix [for]="PSOAppDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #PSOAppDatePicker></mat-datepicker>
+              <mat-error *ngIf="chitgroupForm.controls.psoAppDate.hasError('required')">
+                Application Date is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="28%">
+              <mat-label>PSO Issue Date</mat-label>
+              <input matInput [matDatepicker]="PSOIssueDatePicker" formControlName="psoIssueDate">
+              <mat-datepicker-toggle matSuffix [for]="PSOIssueDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #PSOIssueDatePicker></mat-datepicker>
+              <mat-error *ngIf="chitgroupForm.controls.psoIssueDate.hasError('required')">
+                Issue Date is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="28%">
+              <mat-label>PSO Number</mat-label>
+              <input matInput formControlName="psoNumber">
+              <mat-error *ngIf="chitgroupForm.controls.psoNumber.hasError('required')">
+                PSO Number is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="40%" *ngIf="!psoFileExists">
+              <mat-label>PSO Certificate Copy</mat-label>
+              <input matInput style="border: 1px;" formControlName="psoCertFile" [value]="psoFileName || ''" placeholder="No file selected">
+              <input type="file" #psouploadFile (change)="onPSOFileSelect($event)" [style.display]="'none'">
+              <span fxFlex="10%" fxFlexAlign="center">
+                <button mat-button (click)="psouploadFile.click()">
+                  <fa-icon icon="folder-open" size="lg"></fa-icon>
+                  &nbsp;&nbsp;
+                  Browse
+                </button>
+              </span>
+              <mat-error *ngIf="chitgroupForm.controls.psoCertFile.hasError('required')">
+                Certificate File is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="40%" *ngIf="psoFileExists">
+              <mat-label>PSO Certificate Copy</mat-label>
+              <input matInput readonly  [value]="psoFileName">
+              <span fxFlex="10%" fxFlexAlign="flex-start">
+                <button class="document-action-button" mat-raised-button color="primary" (click)="download('PSO')">
+                  <fa-icon icon="cloud-download-alt"></fa-icon>
+                </button>
+              </span>
+              <span fxFlex="5%" fxFlexAlign="flex-end">
+                  <button class="document-action-button" mat-raised-button color="warn" (click)="deleteDocument('PSO')">
+                  <fa-icon icon="times"></fa-icon>
+                </button>
+              </span>
+            </mat-form-field>
+
+          </div>
+
+          <div fxLayout="row wrap" fxLayoutGap="5%" fxLayout.lt-md="column">
+            <mat-form-field fxFlex="28%">
+              <mat-label>CC Application Date</mat-label>
+              <input matInput [matDatepicker]="CCAppDatePicker" formControlName="ccAppDate">
+              <mat-datepicker-toggle matSuffix [for]="CCAppDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #CCAppDatePicker></mat-datepicker>
+              <mat-error *ngIf="chitgroupForm.controls.ccAppDate.hasError('required')">
+                Application Date is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="28%">
+              <mat-label>CC Issue Date</mat-label>
+              <input matInput [matDatepicker]="CCIssueDatePicker" formControlName="ccIssueDate">
+              <mat-datepicker-toggle matSuffix [for]="CCIssueDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #CCIssueDatePicker></mat-datepicker>
+              <mat-error *ngIf="chitgroupForm.controls.ccIssueDate.hasError('required')">
+                Issue Date is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="28%">
+              <mat-label>CC Number</mat-label>
+              <input matInput formControlName="ccNumber">
+              <mat-error *ngIf="chitgroupForm.controls.ccNumber.hasError('required')">
+                CC Number is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="40%" *ngIf="!ccFileExists">
+              <mat-label>CC Certificate Copy</mat-label>
+              <input matInput style="border: 1px;"  formControlName="ccCertFile" [value]="ccFileName || ''" placeholder="No file selected">
+              <input type="file" #ccuploadFile (change)="onCCFileSelect($event)" [style.display]="'none'">
+              <span fxFlex="10%" fxFlexAlign="center">
+                <button mat-button (click)="ccuploadFile.click()">
+                  <fa-icon icon="folder-open" size="lg"></fa-icon>
+                  &nbsp;&nbsp;
+                  Browse
+                </button>
+              </span>
+              <mat-error *ngIf="chitgroupForm.controls.ccCertFile.hasError('required')">
+                Certificate File is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="40%" *ngIf="ccFileExists">
+              <mat-label>CC Certificate Copy</mat-label>
+              <input matInput readonly  [value]="ccFileName">
+              <span fxFlex="10%" fxFlexAlign="flex-start">
+                <button class="document-action-button" mat-raised-button color="primary" (click)="download('CC')">
+                  <fa-icon icon="cloud-download-alt"></fa-icon>
+                </button>
+              </span>
+              <span fxFlex="5%" fxFlexAlign="flex-end">
+                  <button class="document-action-button" mat-raised-button color="warn" (click)="deleteDocument('CC')">
+                  <fa-icon icon="times"></fa-icon>
+                </button>
+              </span>
+            </mat-form-field>
+          </div>
+
+
+
+        </mat-tab>
+      </mat-tab-group>
+      </mat-card-content>
+
+      <mat-card-actions fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="5px">
+        <button type="button" mat-raised-button [routerLink]="['../']">Cancel</button>
+                <button mat-raised-button color="primary" [disabled]="(!chitgroupForm.valid) || !validForm()" (click)="submit()">Submit</button>
+      </mat-card-actions>
+
+    </form>
+
+  </mat-card>
+
+</div>

@@ -1,0 +1,344 @@
+<div class="container">
+
+  <mat-card>
+    <form [formGroup]="chitProductAccountingForm">
+      <mat-card-content>
+
+        <div fxFlexFill fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+
+          <h3 fxFlex="98%" class="mat-h3">Chit Accounting Configuration</h3>
+          <!-- 1 Asset -->
+          <h4 fxFlex="98%" class="mat-h4">Asset</h4>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Receivable From Prized Subscriber</mat-label>
+            <mat-select formControlName="receivableFromPrizedSubscriberId" required>
+              <mat-option *ngFor="let assestAccount of assetAccountData" [value]="assestAccount.id">
+                {{ assestAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Receivable From Prized Subscriber is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Oustanding Subscription</mat-label>
+            <mat-select formControlName="oustandingSubscriptionId" required>
+              <mat-option *ngFor="let assestAccount of assetAccountData" [value]="assestAccount.id">
+                {{ assestAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Oustanding Subscription is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Bids A/C</mat-label>
+            <mat-select formControlName="bidsACId" required>
+              <mat-option *ngFor="let assestAccount of assetAccountData" [value]="assestAccount.id">
+                {{ assestAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Bids A/C is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Excess/Short Payment Of PS Subscriber</mat-label>
+            <mat-select formControlName="excessShortPaymentOfPSSubscriberId" required>
+              <mat-option *ngFor="let assestAccount of assetAccountData" [value]="assestAccount.id">
+                {{ assestAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Excess/Short Payment Of PS Subscriber is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Foreman Chit</mat-label>
+            <mat-select formControlName="foremanChitId" required>
+              <mat-option *ngFor="let assestAccount of assetAccountData" [value]="assestAccount.id">
+                {{ assestAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Foreman Chit is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+		      <mat-form-field fxFlex="30%">
+            <mat-label>Bid Advance</mat-label>
+            <mat-select formControlName="bidAdvanceId" required>
+              <mat-option *ngFor="let assestAccount of assetAccountData" [value]="assestAccount.id">
+                {{ assestAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Foreman Chit is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <!-- 2 Liabilities -->
+          <h4 fxFlex="98%" class="mat-h4">Liabilities</h4>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Receivable From Non Prized Subscriber</mat-label>
+            <mat-select formControlName="receivableFromNonPrizedSubscriberId" required>
+              <mat-option *ngFor="let liabilityAccount of liabilityAccountData" [value]="liabilityAccount.id">
+                {{ liabilityAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Receivable From Non Prized Subscriber is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Subscription Received in Advance</mat-label>
+            <mat-select formControlName="subscriptionReceivedInAdvanceId" required>
+              <mat-option *ngFor="let liabilityAccount of liabilityAccountData" [value]="liabilityAccount.id">
+                {{ liabilityAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Subscription Received in Advance is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Chit Subscription</mat-label>
+            <mat-select formControlName="subscriptionId" required>
+              <mat-option *ngFor="let liabilityAccount of liabilityAccountData" [value]="liabilityAccount.id">
+                {{ liabilityAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Chit Subscription is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Liability on Own Chits</mat-label>
+            <mat-select formControlName="ownChitsId" required>
+              <mat-option *ngFor="let liabilityAccount of liabilityAccountData" [value]="liabilityAccount.id">
+                {{ liabilityAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Liability on Own Chits is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Dividend Payable</mat-label>
+            <mat-select formControlName="dividendPayableId" required>
+              <mat-option *ngFor="let liabilityAccount of liabilityAccountData" [value]="liabilityAccount.id">
+                {{ liabilityAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Dividend Payable is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Subscription  Payable</mat-label>
+            <mat-select formControlName="subscriptionPayableId" required>
+              <mat-option *ngFor="let liabilityAccount of liabilityAccountData" [value]="liabilityAccount.id">
+                {{ liabilityAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Subscription  Payable is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Terminated Subscriber Divedend</mat-label>
+            <mat-select formControlName="terminatedSubscriberDivedendId" required>
+              <mat-option *ngFor="let liabilityAccount of liabilityAccountData" [value]="liabilityAccount.id">
+                {{ liabilityAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Terminated Subscriber Divedend is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Outstanding Subscription Advance NPS</mat-label>
+            <mat-select formControlName="outstandingSubscriptionAdvanceNpsId" required>
+              <mat-option *ngFor="let liabilityAccount of liabilityAccountData" [value]="liabilityAccount.id">
+                {{ liabilityAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Terminated Subscribers Payable is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>GST Payable</mat-label>
+            <mat-select formControlName="gstPayableId" required>
+              <mat-option *ngFor="let liabilityAccount of liabilityAccountData" [value]="liabilityAccount.id">
+                {{ liabilityAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              GST Payable is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+		      <mat-form-field fxFlex="30%">
+            <mat-label>Terminated Subscribers PayableId</mat-label>
+            <mat-select formControlName="terminatedSubscribersPayableId" required>
+              <mat-option *ngFor="let liabilityAccount of liabilityAccountData" [value]="liabilityAccount.id">
+                {{ liabilityAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Liability on Own Chits is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>CGST Output</mat-label>
+            <mat-select formControlName="chitCgstId" required>
+              <mat-option *ngFor="let liabilityAccount of liabilityAccountData" [value]="liabilityAccount.id">
+                {{ liabilityAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              CGST Output <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>SGST Output</mat-label>
+            <mat-select formControlName="chitSgstId" required>
+              <mat-option *ngFor="let liabilityAccount of liabilityAccountData" [value]="liabilityAccount.id">
+                {{ liabilityAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              SGST Output <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          
+
+          <!-- 3 Income -->
+          <h4 fxFlex="98%" class="mat-h4">Income</h4>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Enrollement Fee</mat-label>
+            <mat-select formControlName="enrollmentFeeId" required>
+              <mat-option *ngFor="let incomeAccount of incomeAccountData" [value]="incomeAccount.id">
+                {{ incomeAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Enrollement Fee is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Replacement Charges</mat-label>
+            <mat-select formControlName="replacementChargesId" required>
+              <mat-option *ngFor="let incomeAccount of incomeAccountData" [value]="incomeAccount.id">
+                {{ incomeAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Replacement Charges is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Cheque Bounce Charges</mat-label>
+            <mat-select formControlName="chequeBounceChargesId" required>
+              <mat-option *ngFor="let incomeAccount of incomeAccountData" [value]="incomeAccount.id">
+                {{ incomeAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Cheque Bounce Charges is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Verification Charges</mat-label>
+            <mat-select formControlName="chitVerificationChargeId" required>
+              <mat-option *ngFor="let incomeAccount of incomeAccountData" [value]="incomeAccount.id">
+                {{ incomeAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Verification Charges is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Penalty</mat-label>
+            <mat-select formControlName="penaltyId" required>
+              <mat-option *ngFor="let incomeAccount of incomeAccountData" [value]="incomeAccount.id">
+                {{ incomeAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Penalty is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Foreman Commission</mat-label>
+            <mat-select formControlName="foremanCommissionId" required>
+              <mat-option *ngFor="let incomeAccount of incomeAccountData" [value]="incomeAccount.id">
+                {{ incomeAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Foreman Commission is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Dividend Earned on Own Chits</mat-label>
+            <mat-select formControlName="dividendEarnedOnOwnChitsId" required>
+              <mat-option *ngFor="let incomeAccount of incomeAccountData" [value]="incomeAccount.id">
+                {{ incomeAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Dividend Earned on Own Chits is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="30%">
+            <mat-label>Passbook/Statement</mat-label>
+            <mat-select formControlName="chitPassbookId" required>
+              <mat-option *ngFor="let incomeAccount of incomeAccountData" [value]="incomeAccount.id">
+                {{ incomeAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Passbook/Statement is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <!-- 4 Expenses -->
+          <h4 fxFlex="98%" class="mat-h4">Expenses</h4>
+          <mat-form-field fxFlex="48%">
+            <mat-label>Bid Loss</mat-label>
+            <mat-select formControlName="bidLossId" required>
+              <mat-option *ngFor="let expenseAccount of expenseAccountData" [value]="expenseAccount.id">
+                {{ expenseAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Bid Loss is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field fxFlex="48%">
+            <mat-label>Discount to Customers</mat-label>
+            <mat-select formControlName="discountToCustomersId" required>
+              <mat-option *ngFor="let expenseAccount of expenseAccountData" [value]="expenseAccount.id">
+                {{ expenseAccount.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              Discount to Customers is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+
+      </mat-card-content>
+
+      <mat-card-actions fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="5px">
+        <button type="button" mat-raised-button [routerLink]="['../']">Cancel</button>
+        <!-- <button type="button" mat-raised-button (click)="submit()">Cancel</button> -->
+        <button mat-raised-button color="primary" [disabled]="!chitProductAccountingForm.valid"
+          (click)="submit()">Submit</button>
+      </mat-card-actions>
+
+    </form>
+  </mat-card>
+</div>

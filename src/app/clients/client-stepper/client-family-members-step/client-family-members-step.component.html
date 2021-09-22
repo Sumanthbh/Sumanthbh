@@ -1,0 +1,81 @@
+<div class="mat-typography">
+
+    <h3>Family Members</h3>
+
+    <div fxLayout="row" fxLayoutAlign="flex-end" class="m-b-20">
+      <button mat-raised-button color="primary" (click)="addFamilyMember()">
+        <fa-icon icon="plus"></fa-icon>&nbsp;&nbsp;Add
+      </button>
+    </div>
+
+    <mat-accordion>
+
+      <mat-expansion-panel *ngFor="let member of clientFamilyMembers;index as i" class="family-member">
+
+        <mat-expansion-panel-header>
+
+          <mat-panel-title>
+            {{ member.firstName }} {{ member.middleName ? member.middleName + ' ' + member.lastName : member.lastName }}
+          </mat-panel-title>
+
+          <mat-panel-description>
+            {{member.relationship}}
+          </mat-panel-description>
+
+        </mat-expansion-panel-header>
+
+        <mat-divider></mat-divider>
+
+        <div class="family-member-actions" fxLayout="row" fxLayoutAlign="flex-end">
+          <button mat-button color="primary">
+            <fa-icon icon="edit" (click)="editFamilyMember(member, i)"></fa-icon>
+          </button>
+          <button mat-button color="warn" (click)="deleteFamilyMember(member.firstName,i)">
+            <fa-icon icon="trash"></fa-icon>
+          </button>
+        </div>
+        
+        <p>
+          Name : {{ member.firstName }}<br />
+          Relationship : {{ member.relationshipId | find:clientTemplate.familyMemberOptions.relationshipIdOptions:'id':'name' }}<br />
+          Educational Qualification : {{ member.qualificationId | find:clientTemplate.familyMemberOptions.qualificationIdOptions:'id':'name'}}<br />
+          Age : {{ member.age }}<br />
+          Is Dependent : {{ member.isDependent ? 'Yes' : 'No' }}<br />
+          <!-- Marital Status : {{ member.maritalStatusId | find:clientTemplate.familyMemberOptions.maritalStatusIdOptions:'id':'name' }}<br /> -->
+          Gender : {{ member.genderId | find:clientTemplate.familyMemberOptions.genderIdOptions:'id':'name' }}<br />
+          Profession : {{member.professionId | find:clientTemplate.familyMemberOptions.professionIdOptions:'id':'name' }}<br />
+          <!-- Date Of Birth : {{member.dateOfBirth | date}}<br /> -->
+          Contact Number : {{member.mobileNumber}}<br />
+          <div *ngIf="member.isnominee" > 
+            <p>
+              Nominee DOB : {{member.dateOfBirth}}<br />
+              Nominee Aadhaar : {{member.nomadhar}}<br />
+              Nominee Secondary ID Type : {{ member.nomsecondaryid | find:clientTemplate.idproofOptions:'id':'name' }}<br />
+              Nominee Secondary ID Number : {{member.nomsecondaryidnum}}<br />
+              Pin Code : {{member.nompincode}}<br />
+              State : {{member.nomstate | find:clientTemplate.address.stateProvinceIdOptions:'id':'name'}}<br />
+              District : {{member.nomdistrict | find:clientTemplate.address.districtIdOptions:'id':'name'}}<br />
+              Taluka : {{member.nomtaluka | find:clientTemplate.address.talukaIdOptions:'id':'name'}}<br />
+              Village/Town : {{member.nomvillage}}<br />
+              Area Locality : {{member.nomarealocality}}<br />
+              Street Number : {{member.nomstreetno}}<br />
+              House Number : {{member.nomhouseno}}<br />
+            </p>
+          </div>
+
+      </mat-expansion-panel>
+
+    </mat-accordion>
+
+    <div fxLayout="row" class="margin-t" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="2%">
+      <button mat-raised-button matStepperPrevious>
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;&nbsp;
+        Previous
+      </button>
+      <button mat-raised-button matStepperNext>
+        Next&nbsp;&nbsp;
+        <fa-icon icon="arrow-right"></fa-icon>
+      </button>
+    </div>
+
+</div>

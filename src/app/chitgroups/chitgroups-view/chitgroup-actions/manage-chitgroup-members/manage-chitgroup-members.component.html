@@ -1,0 +1,104 @@
+<div class="container" fxLayout="row" fxLayoutGap="3%">
+
+  <mat-card fxFlex class="client-card" fxLayout="column" fxLayoutGap="2%">
+
+    <div class="mat-table">
+      <div class="mat-row">
+        <div class="mat-cell">
+          <mat-label>Required Subscribers &nbsp;&nbsp; <b>{{this.chitgroupData.chitduration}}</b></mat-label>
+        </div>
+        <div class="mat-cell">
+          <mat-label>Total Members Subscribed &nbsp;&nbsp; <b>{{this.clientMembers.length}}</b></mat-label>
+        </div>
+      </div>
+    </div>
+
+    <mat-form-field fxFlex="50%">
+      <mat-label>Search and Add Subscriber</mat-label>
+      <input matInput [formControl]="clientChoice" [matAutocomplete]="clientsAutocomplete">
+    </mat-form-field>
+
+    <mat-autocomplete autoActiveFirstOption #clientsAutocomplete="matAutocomplete" [displayWith]="displayClient" (optionSelected)="loadDetails()">
+      <mat-option *ngFor="let client of clientsData" [value]="client">
+        {{ client.displayName }}
+      </mat-option>
+    </mat-autocomplete>
+    <!-- <div >
+      <h3 matSubheader>Subscriber Details</h3>
+    </div> -->
+    <div class="mat-table">
+      <div class="mat-header-row">
+        <div class="mat-header-cell"><h3 matSubheader>Subscriber Details</h3>
+        </div>
+        <button mat-mini-fab color="primary" (click)="addClient()">
+          <fa-icon icon="plus"></fa-icon>
+        </button>
+      </div>
+      <div class="mat-row">
+        <div class="mat-cell"></div>
+        <div class="mat-cell">Name</div>
+        <div class="mat-cell">Aadhaar Number</div>
+        <div class="mat-cell">Mobile Number</div>
+        <div class="mat-cell">Chit Number</div>
+      </div>
+      <div class="mat-row" *ngIf="clientChoice.value.id">
+        <div class="mat-cell">
+          <img mat-card-md-image class="profile-image"
+            [src]="(clientImage)?clientImage:'assets/images/user_placeholder.png'">
+        </div>
+        <div class="mat-cell">{{clientChoice.value.displayName}}</div>
+        <div class="mat-cell">{{clientChoice.value.adhar}}</div>
+        <div class="mat-cell">{{clientChoice.value.mobileNo}}</div>
+        <div class="mat-cell">
+          <mat-select required [formControl]="chitnumberchoice">
+            <mat-option *ngFor="let chitnum of chitNumberOptions" [value]="chitnum">
+            {{ chitnum }}
+            </mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <!-- <div class="mat-row">
+        <div class="mat-cell">Office</div>
+        <div class="mat-cell">{{clientChoice.value.officeName}}</div>
+      </div> -->
+    </div>
+
+  </mat-card>
+
+  <mat-card fxFlex="38%">
+
+    <div class="mat-header-cell"><h3 matSubheader>Subscriber List</h3>
+      </div>
+    <div class="mat-row">
+       <div class="mat-cell">Chit Number</div>
+      <div class="mat-cell">Name</div>
+      <div class="mat-cell">Mobile Number</div> 
+      
+      <!-- <div mat-list-item>
+        <span matLine >Chit #</span>
+        <span matLine class="p-5">Name</span>
+        <span matLine class="p-10">Mobile Number</span>
+      </div> -->
+    </div>
+
+    <mat-nav-list  *ngIf="clientMembers?.length">
+      <!-- <div mat-list-item>
+        <span matLine class="p-10">Chit #</span>
+        <span matLine class="p-10">Name          :</span>
+        <span matLine class="p-10">Mobile Number</span>
+        <div fxFlex></div>
+      </div> -->
+      <div class="mat-row" mat-list-item *ngFor="let client of clientMembers index as i">
+        <span matLine class="mat-cell">{{client.chitNumber}} </span>
+        <span matLine class="mat-cell">{{client.name}} </span>
+        <span matLine class="mat-cell">{{client.mobileno}}</span>
+        <div fxFlex></div>
+        <button mat-icon-button color="warn" (click)="removeClient(i, client)">
+          <fa-icon icon="trash"></fa-icon>
+        </button>
+      </div>
+    </mat-nav-list>
+
+  </mat-card>
+
+</div>

@@ -1,0 +1,589 @@
+<form [formGroup]="createClientForm">
+
+  <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+  
+    <mat-form-field fxFlex="20%">
+      <mat-label>Branch</mat-label>
+      <mat-select required formControlName="officeId">
+        <mat-option *ngFor="let office of officeOptions" [value]="office.id">
+          {{ office.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="createClientForm.controls.officeId.hasError('required')">
+        Office is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  
+  
+  
+    <mat-form-field fxFlex="30%">
+      <mat-label>Staff</mat-label>
+      <mat-select formControlName="staffId">
+        <mat-option *ngFor="let staff of staffOptions" [value]="staff.id">
+          {{ staff.displayName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> 
+
+    
+      <mat-label style="align-self: center;">Introduced as</mat-label>
+					<!-- <label class="radio-inline">   
+					<input type="checkbox" disabled name="radio"> All
+					<span class="checkmark"></span>
+					</label> -->
+					<label style="align-self: center;">	
+					<input type="checkbox"  disabled checked="checked" name="radio">Member
+					<span class="checkmark"></span>
+					</label>
+					<!-- <label class="radio-inline">	
+					<input type="checkbox" disabled name="radio">Agent
+					<span class="checkmark"></span>
+					</label>
+					<label class="radio-inline">	
+					<input type="checkbox" disabled name="radio">Guarantor
+					<span class="checkmark"></span>
+					</label>
+					<label class="radio-inline">	
+					<input type="checkbox" disabled name="radio">Staff
+					<span class="checkmark"></span>
+					</label>		 -->
+      
+
+    <!-- <mat-form-field fxFlex="30%">
+      <mat-label>Introduced as</mat-label>
+      <mat-select formControlName="introduceId">
+        <mat-option *ngFor="let introduce of introduceOptions" [value]="introduce.id">
+          {{ introduce.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+    
+   
+  <!-- <hr size="1" width="100%" color="deepskyblue"> -->
+  <H3 fxFlex="35%">Client Details</H3><BR />
+  <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column"> 
+   
+  <mat-form-field fxFlex="20%">
+    <mat-label>Title</mat-label>
+    <mat-select required formControlName="titleId">
+      <mat-option *ngFor="let title of titleOptions" [value]="title.id">
+        {{ title.name }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="createClientForm.controls.titleId.hasError('required')">
+      Title is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="createClientForm.contains('firstname')" fxFlex="40%">
+    <mat-label>Applicant Name</mat-label>
+    <input matInput required formControlName="firstname">
+    <mat-error *ngIf="createClientForm.controls.firstname.hasError('required')">
+      Client first name is <strong>required</strong>
+    </mat-error>
+    <mat-error *ngIf="createClientForm.controls.firstname.hasError('pattern')">
+      Client first name <strong>cannot</strong> begin with a special character or number
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field fxFlex="20%">
+    <mat-label>{{ createClientForm.value.legalFormId === 1 ? 'Date of Birth' : 'Incorporation Date' }}</mat-label>
+    <input required matInput [max]="maxDateDob" [min]="minDateDob" [matDatepicker]="dateOfBirthDatePicker" formControlName="dateOfBirth">
+    <mat-error *ngIf="createClientForm.controls.dateOfBirth.hasError('required')">
+      Field is <strong>required</strong>
+    </mat-error>
+    <mat-datepicker-toggle matSuffix [for]="dateOfBirthDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #dateOfBirthDatePicker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field  fxFlex="28%">
+      <mat-label>Aadhaar Number</mat-label>
+      <input type="text" matInput maxLength="12" required formControlName="adhar">
+      <mat-error *ngIf="createClientForm.controls.adhar.hasError('required')">
+        Client Aadhaar number is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="createClientForm.controls.adhar.hasError('pattern')">
+        Client Aadhaar number <strong>has to be</strong> 12 digit long
+      </mat-error> 
+    </mat-form-field>
+    <div fxLayout="column" style="align-self: center;" *ngIf="lastverifiedadhar === createClientForm.controls.adhar.value">
+      <fa-icon icon="check-circle" style ="color:greenyellow " size="2x" ></fa-icon>
+      <mat-label><sup>{{lastverifiedadhardate?lastverifiedadhardate:''}}</sup></mat-label> 
+    </div>
+
+    <button class="verifyButton" type="button" [disabled]="loadingAdhar" *ngIf="!createClientForm.controls.adhar.hasError('required') && !createClientForm.controls.adhar.hasError('pattern') 
+        && createClientForm.controls.firstname.value && !createClientForm.controls.officeId.hasError('required')"  mat-raised-button color="primary" (click)="verifyAadhaar()" >        
+        {{lastverifiedadhar === createClientForm.controls.adhar.value? "Re-Verify" : "Verify"}}
+        <mat-spinner [diameter]="30" *ngIf="loadingAdhar"></mat-spinner>
+    </button>
+
+    <!-- <button mat-icon-button color="primary" *ngIf="adhaarVerified">
+        <fa-icon icon="check"></fa-icon>&nbsp;&nbsp;Verified
+    </button> -->
+
+    <!-- <mat-form-field fxFlex="30%">
+      <mat-label>Mobile No</mat-label>
+      <input matInput required type="number" formControlName="mobileNo">
+    </mat-form-field> -->
+
+    <mat-form-field fxFlex="26%">
+      <mat-label>Mobile Number</mat-label>
+      <input type="text" matInput maxLength="10" required formControlName="mobileNo">
+      <mat-error *ngIf="createClientForm.controls.mobileNo.hasError('required')">
+        Client Mobile Number is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="createClientForm.controls.mobileNo.hasError('pattern')">
+        Client Mobile Number <strong>has to be</strong> 10 digit long
+      </mat-error>
+    </mat-form-field>
+
+    <div fxLayout="column" style="align-self: center;" *ngIf="lastverifiedmobileNo === createClientForm.controls.mobileNo.value">
+      <fa-icon icon="check-circle" style ="color:greenyellow " size="2x" ></fa-icon>
+      <mat-label><sup>{{lastverifiedmobiledate?lastverifiedmobiledate:''}}</sup></mat-label> 
+    </div>
+    <button mat-raised-button class="verifyButton" type="button" color="primary" (click)="verifyMobileNumber()"
+      *ngIf="!createClientForm.controls.mobileNo.hasError('required') && !createClientForm.controls.mobileNo.hasError('pattern')
+        && createClientForm.controls.firstname.value && !createClientForm.controls.officeId.hasError('required')" [disabled]="loadingMobile">
+        {{lastverifiedmobileNo === createClientForm.controls.mobileNo.value? "Re-Verify" : "Verify"}}
+        <mat-spinner [diameter]="30" *ngIf="loadingMobile"></mat-spinner>
+    </button>
+
+    <!-- <mat-form-field fxFlex="40%">
+      <mat-label>Alternate Mobile No</mat-label>
+      <input matInput required type="number" formControlName="alternateMobileNo">
+    </mat-form-field> -->
+
+    <!-- <mat-form-field fxFlex="48%">
+      <mat-label>Legal Form</mat-label>
+      <mat-select formControlName="legalFormId">
+        <mat-option *ngFor="let legalForm of legalFormOptions" [value]="legalForm.id">
+          {{ legalForm.value }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+
+    <!-- <mat-form-field *ngIf="createClientForm.contains('fullname')" fxFlex="48%">
+      <mat-label>Name</mat-label>
+      <input matInput required formControlName="fullname">
+      <mat-error *ngIf="createClientForm.controls.fullname.hasError('required')">
+        Client name is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="createClientForm.controls.fullname.hasError('pattern')">
+        Client name <strong>cannot</strong> begin with a special character or number
+      </mat-error>
+    </mat-form-field> -->
+    <!-- <mat-form-field *ngIf="createClientForm.contains('middlename')" fxFlex="48%">
+      <mat-label>Middle Name</mat-label>
+      <input matInput formControlName="middlename">
+      <mat-error *ngIf="createClientForm.controls.middlename.hasError('pattern')">
+        Client middle name <strong>cannot</strong> begin with a special character or number
+      </mat-error>
+    </mat-form-field> -->
+
+    <!-- <mat-form-field *ngIf="createClientForm.contains('lastname')" fxFlex="48%">
+      <mat-label>Last Name</mat-label>
+      <input matInput required formControlName="lastname">
+      <mat-error *ngIf="createClientForm.controls.lastname.hasError('required')">
+        Client last name is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="createClientForm.controls.lastname.hasError('pattern')">
+        Client last name <strong>cannot</strong> begin with a special character or number
+      </mat-error>
+    </mat-form-field> -->
+
+    <mat-form-field *ngIf="createClientForm.value.legalFormId === 1" fxFlex="30%">
+      <mat-label>Gender</mat-label>
+      <mat-select matInput required formControlName="genderId">
+        <mat-option *ngFor="let gender of genderOptions" [value]="gender.id">
+          {{ gender.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="createClientForm.controls.genderId.hasError('required')">
+        Field is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="30%">
+      <mat-label>Marital Status</mat-label>
+      <mat-select matInput required formControlName="maritalId">
+        <mat-option *ngFor="let maritalStatus of maritalOptions" [value]="maritalStatus.id">
+          {{ maritalStatus.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="createClientForm.controls.maritalId.hasError('required')">
+        Field is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- <mat-form-field fxFlex="48%">
+      <mat-label>External Id</mat-label>
+      <input matInput formControlName="externalId">
+    </mat-form-field> -->
+
+    
+
+    <mat-form-field fxFlex="30%">
+      <mat-label>Email Id</mat-label>
+      <input type="text" matInput required formControlName="emailAddress" >
+      <mat-error *ngIf="createClientForm.controls.emailAddress.hasError('required')">
+        Email is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="createClientForm.controls.emailAddress.hasError('pattern')">
+        Invalid <strong>Email</strong> Address
+      </mat-error>
+    </mat-form-field>
+
+    
+
+    <mat-form-field fxFlex="30%">
+      <mat-label>Educational Qualification</mat-label>
+      <mat-select matInput  formControlName="educationId">
+        <mat-option *ngFor="let qualification of educationOptions" [value]="qualification.id">
+          {{ qualification.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="30%">
+      <mat-label>Profession </mat-label>
+      <mat-select matInput  formControlName="professionId">
+        <mat-option *ngFor="let profession of professionOptions" [value]="profession.id">
+          {{ profession.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="30%">
+      <mat-label>Annual Income </mat-label>
+      <mat-select matInput  formControlName="annualId">
+        <mat-option *ngFor="let annual of annualOptions" [value]="annual.id">
+          {{ annual.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="22%">
+      <mat-label>NREGA Number</mat-label>
+      <input matInput type="text" formControlName="nrega">
+      <mat-error *ngIf="createClientForm.controls.nrega.hasError('pattern')">
+        Only <strong>Alphanumeric</strong> characters allowed
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="22%">
+      <mat-label>GST No</mat-label>
+      <input matInput  type="text" formControlName="gstNo">
+      <mat-error *ngIf="createClientForm.controls.gstNo.hasError('pattern')">
+        Only <strong>Alphanumeric</strong> characters allowed
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="22%">
+      <mat-label>Belonging to </mat-label>
+      <mat-select matInput formControlName="belongingId">
+        <mat-option *ngFor="let belonging of belongingOptions" [value]="belonging.id">
+          {{ belonging.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="22%">
+      <mat-label> Religion </mat-label>
+      <mat-select matInput formControlName="religionId">
+        <mat-option *ngFor="let religion of religionOptions" [value]="religion.id">
+          {{ religion.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+  <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+    
+    <!-- <div class="horizontal_dotted_line"></div> -->
+    
+    <mat-form-field fxFlex="20%">
+      <mat-label>Secondary Identity Proof Type</mat-label>
+      <mat-select required formControlName="idproofId">
+        <mat-option *ngFor="let idProof of idproofOptions" [value]="idProof.id">
+          {{ idProof.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="createClientForm.controls.idproofId.hasError('required')">
+        Field is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- <mat-form-field fxFlex="40%">
+      <mat-label>Secondary Identity Proof Number</mat-label>
+      <input matInput required type="number" formControlName="secIdProofNo">
+    </mat-form-field> -->
+
+    <mat-form-field *ngIf="createClientForm.contains('secIdProofNo')" fxFlex="30%">
+      <mat-label>Secondary Identity Proof Number</mat-label>
+
+      <input matInput required formControlName="secIdProofNo">
+      <mat-error *ngIf="createClientForm.controls.secIdProofNo.hasError('required')">
+        Client Secondary Identity Proof Number is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="createClientForm.controls.secIdProofNo.hasError('pattern')">
+        Only <strong>Alphanumeric</strong> characters allowed
+      </mat-error>
+    </mat-form-field>
+    <div fxLayout="column" style="align-self: center;" *ngIf="lastverifiedsecondaryid && lastverifiedsecondaryid === createClientForm.controls.secIdProofNo.value">
+      <fa-icon icon="check-circle" style ="color:greenyellow " size="2x" ></fa-icon>
+      <mat-label><sup>{{lastverifiedSecondaryidDate?lastverifiedSecondaryidDate:''}}</sup></mat-label> 
+    </div>
+    
+    <button mat-raised-button class="verifyButton" type="button" color="primary" (click)="verifySecId()"
+      *ngIf="!createClientForm.controls.secIdProofNo.hasError('required') && !createClientForm.controls.secIdProofNo.hasError('pattern') && !createClientForm.controls.idproofId.hasError('required')
+        && !createClientForm.controls.officeId.hasError('required') && createClientForm.controls.firstname.value" [disabled]="loadingSecId">
+        {{lastverifiedsecondaryid === createClientForm.controls.secIdProofNo.value? "Re-Verify" : "Verify"}}
+        <mat-spinner [diameter]="30" *ngIf="loadingSecId"></mat-spinner>
+    </button>
+  </div>
+  <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+    <mat-form-field fxFlex="20%">
+      <mat-label>Secondary Address Proof Type</mat-label>
+      <mat-select required formControlName="addrproofId">
+        <mat-option *ngFor="let addressProof of addrproofOptions" [value]="addressProof.id">
+          {{ addressProof.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="createClientForm.controls.addrproofId.hasError('required')">
+        Field is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- <mat-form-field fxFlex="40%">
+      <mat-label>Secondary Address Proof Number</mat-label>
+      <input matInput required  type="number" formControlName="addressProofNo">
+    </mat-form-field> -->
+
+    <mat-form-field *ngIf="createClientForm.contains('secaddressproofno')" fxFlex="30%">
+      <mat-label>Secondary Address Proof Number</mat-label>
+      <input matInput required formControlName="secaddressproofno">
+      <mat-error *ngIf="createClientForm.controls.secaddressproofno.hasError('required')">
+        Client Secondary Address Proof Number is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="createClientForm.controls.secaddressproofno.hasError('pattern')">
+        Only <strong>Alphanumeric</strong> characters allowed
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field fxFlex="20%">
+      <mat-label>Chit Amount Applied</mat-label>
+      <mat-select required formControlName="AmountApplied">
+        <mat-option *ngFor="let AmountApplied of AmountAppliedOptions" [value]="AmountApplied.id">
+          {{ AmountApplied.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="createClientForm.controls.AmountApplied.hasError('required')">
+        Field is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+
+
+    <!-- <hr size="1" width="100%" color="deepskyblue"> -->
+    <!-- <H3>Family Details</H3><BR /> -->
+    <H3 fxFlex="35%">Family Details</H3><BR />
+  <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column"> 
+    
+
+    <!-- <mat-form-field fxFlex="25%">
+      <mat-label>Details of Father/Spouse</mat-label>
+      <mat-select matInput required formControlName="fatherspouseId">
+        <mat-option *ngFor="let fs of fatherspouseOptions" [value]="fs.id">
+          {{ fs.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="createClientForm.controls.fatherspouseId.hasError('required')">
+        Field is <strong>required</strong>
+      </mat-error>
+    </mat-form-field> -->
+
+    <mat-form-field *ngIf="createClientForm.contains('fsfirstname')" fxFlex="25%">
+      <mat-label>Father Name</mat-label>
+      <input matInput required formControlName="fsfirstname">
+      <mat-error *ngIf="createClientForm.controls.fsfirstname.hasError('required')">
+        Father/Spouse Name is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="createClientForm.controls.fsfirstname.hasError('pattern')">
+        Father/Spouse Name <strong>cannot</strong> begin with a special character or number
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="createClientForm.contains('custmothername')" fxFlex="25%">
+      <mat-label>Mother Name</mat-label>
+      <input matInput required formControlName="custmothername">
+      <mat-error *ngIf="createClientForm.controls.custmothername.hasError('required')">
+        Customer Mother Name is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="createClientForm.controls.custmothername.hasError('pattern')">
+        Customer Mother Name <strong>cannot</strong> begin with a special character or number
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="createClientForm.contains('spousename')" fxFlex="25%">
+      <mat-label>Spouse Name</mat-label>
+      <input matInput formControlName="spousename">
+      <mat-error *ngIf="createClientForm.controls.spousename.hasError('required')">
+        Spouse Name is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="createClientForm.controls.spousename.hasError('pattern')">
+        Spouse Name <strong>cannot</strong> begin with a special character or number
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="30%">
+      <mat-label>Alternate Mobile Number of</mat-label>
+      <mat-select required formControlName="alternateNoId">
+        <mat-option *ngFor="let alternateNo of altMobNumOfOptions" [value]="alternateNo.id">
+          {{ alternateNo.name }}
+        </mat-option>
+        </mat-select>
+        <mat-error *ngIf="createClientForm.controls.alternateNoId.hasError('required')">
+        Field is <strong>required</strong>
+      </mat-error>
+      </mat-form-field>
+
+    <mat-form-field  fxFlex="40%">
+      <mat-label>Alternate Mobile No</mat-label>
+      <input type="text" matInput maxLength="10" required formControlName="alternateMobileNo">
+      <mat-error *ngIf="createClientForm.controls.alternateMobileNo.hasError('required')">
+        Client Alternate Mobile Number is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="createClientForm.controls.alternateMobileNo.hasError('pattern')">
+        Client Alternate Mobile Number <strong>has to be</strong> 10 digit long
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="createClientForm.contains('maidenname')" fxFlex="38%">
+      <mat-label>Maiden Name</mat-label>
+      <input matInput required formControlName="maidenname">
+      <mat-error *ngIf="createClientForm.controls.maidenname.hasError('required')">
+        Maiden Name is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="createClientForm.controls.maidenname.hasError('pattern')">
+        Maiden Name <strong>cannot</strong> begin with a special character or number
+      </mat-error>
+    </mat-form-field>
+
+    </div>
+
+
+    <!-- <mat-checkbox *ngIf="createClientForm.value.legalFormId === 1" fxFlex="48%" labelPosition="before" formControlName="isStaff" class="margin-v">
+      Is staff?
+    </mat-checkbox> -->
+
+    <!-- <mat-form-field fxFlex="48%">
+      <mat-label>Client Type</mat-label>
+      <mat-select formControlName="clientTypeId">
+        <mat-option *ngFor="let clientType of clientTypeOptions" [value]="clientType.id">
+          {{ clientType.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+
+    <!-- <mat-form-field fxFlex="48%">
+      <mat-label>Client Classification</mat-label>
+      <mat-select formControlName="clientClassificationId">
+        <mat-option *ngFor="let clientClassification of clientClassificationTypeOptions" [value]="clientClassification.id">
+          {{ clientClassification.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+
+    <!-- <mat-form-field fxFlex="20%">
+      <mat-label>Submitted On</mat-label>
+      <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="submittedOnDatePicker" required formControlName="submittedOnDate">
+      <mat-datepicker-toggle matSuffix [for]="submittedOnDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #submittedOnDatePicker></mat-datepicker>
+    </mat-form-field> -->
+
+    <!-- <mat-checkbox fxFlex="50%" align="right" labelPosition="before" formControlName="active" class="margin-v">
+      Active?
+    </mat-checkbox> -->
+
+    <!-- <mat-form-field *ngIf="createClientForm.contains('activationDate')" fxFlex="20%">
+      <mat-label>Activation Date</mat-label>
+      <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="activatedOnDatePicker" required
+        formControlName="activationDate">
+      <mat-datepicker-toggle matSuffix [for]="activatedOnDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #activatedOnDatePicker></mat-datepicker>
+      <mat-error *ngIf="createClientForm.controls.activationDate.hasError('required')">
+        Activation Date is <strong>required</strong>
+      </mat-error>
+    </mat-form-field> -->
+
+    <!-- <mat-checkbox fxFlex="48%" labelPosition="before" formControlName="addSavings" class="margin-v">
+      Open Savings Account?
+    </mat-checkbox> 
+
+    <mat-form-field *ngIf="createClientForm.contains('savingsProductId')" fxFlex="48%">
+      <mat-label>Savings Product</mat-label>
+      <mat-select required formControlName="savingsProductId">
+        <mat-option *ngFor="let product of savingProductOptions" [value]="product.id">
+          {{ product.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="createClientForm.controls.savingsProductId.hasError('required')">
+        Savings product is <strong>required</strong>
+      </mat-error>
+    </mat-form-field> -->
+
+    <div fxFlex="100%" fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column" formGroupName="clientNonPersonDetails"
+      *ngIf="createClientForm.contains('clientNonPersonDetails')">
+
+      <mat-form-field fxFlex="48%">
+        <mat-label>Incorporation Validity Till Date</mat-label>
+        <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="incorpValidityTillDateDatePicker" formControlName="incorpValidityTillDate">
+        <mat-datepicker-toggle matSuffix [for]="incorpValidityTillDateDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #incorpValidityTillDateDatePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="48%">
+        <mat-label>Incorporation Number</mat-label>
+        <input matInput formControlName="incorpNumber">
+      </mat-form-field>
+
+      <mat-form-field fxFlex="48%">
+        <mat-label>Main Business Line</mat-label>
+        <mat-select formControlName="mainBusinessLineId">
+          <mat-option *ngFor="let business of businessLineOptions" [value]="business.id">
+            {{ business.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="48%">
+        <mat-label>Constitution</mat-label>
+        <mat-select formControlName="constitutionId">
+          <mat-option *ngFor="let constitution of constitutionOptions" [value]="constitution.id">
+            {{ constitution.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="98%">
+        <mat-label>Remarks</mat-label>
+        <textarea matInput formControlName="remarks"></textarea>
+      </mat-form-field>
+
+    </div>
+
+  </div>
+
+  <div fxLayout="row" class="margin-t" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="2%">
+    <button mat-raised-button matStepperPrevious disabled>
+      <fa-icon icon="arrow-left"></fa-icon>&nbsp;&nbsp;
+      Previous
+    </button>
+    <button mat-raised-button matStepperNext>
+      Next&nbsp;&nbsp;
+      <fa-icon icon="arrow-right"></fa-icon>
+    </button>
+  </div>
+
+</form>

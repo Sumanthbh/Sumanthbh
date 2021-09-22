@@ -1,0 +1,118 @@
+
+<div class="container">
+
+    <mat-card>
+          
+      <form [formGroup]="advApproveHeaderForm">
+        <mat-card-content>
+          <div fxFlexFill fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+            <mat-form-field fxFlex="20%">
+              <mat-label>Branch</mat-label>
+              <mat-select required formControlName="officeId">
+                <mat-option *ngFor="let office of officeOptions" [value]="office.id" (click)="ShowChitGroup(office.id)">
+                  {{ office.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <!-- <mat-form-field fxFlex="22%">
+              <mat-label>Agent</mat-label>
+              <mat-select formControlName="staffId">
+                <mat-option *ngFor="let staff of staffOptions" [value]="staff.id">
+                  {{ staff.displayName }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field> -->
+
+            <mat-form-field fxFlex="22%">
+                <mat-label>Chit Group Name</mat-label>
+                <mat-select required name="type" formControlName="chitId">
+                  <mat-option *ngFor="let chitGroup of chitGroupOptions" [value]="chitGroup.id" (click)="getCollections(chitGroup.id)">
+                    {{ chitGroup.name }} 
+                  </mat-option>
+                  <!-- <mat-option style="display:none"></mat-option> -->
+                </mat-select>
+              </mat-form-field>
+
+<!-- 
+            <mat-form-field fxFlex="22%">
+              <mat-label>Date</mat-label>
+              <input matInput required [max]="maxDate" [min]="minDate" [matDatepicker]="collectionDatePicker" formControlName="date">
+              <mat-datepicker-toggle matSuffix [for]="collectionDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #collectionDatePicker></mat-datepicker>
+            </mat-form-field> -->
+
+            <!-- // [disabled]="!(this.advApproveHeaderForm.controls['staffId'].valid && this.advApproveHeaderForm.controls['date'].valid)" -->
+
+            <!-- <button mat-raised-button color="primary" class="loadButton" (click)="getCollections()">
+              Show Subscriber
+            </button> -->
+          </div>
+  
+        <div style="border-width: 2px solid;">
+          <table mat-table [dataSource]="dataSource">
+
+            <ng-container matColumnDef="ticketNumber">
+              <th mat-header-cell *matHeaderCellDef > <strong> Ticket Number </strong> </th>
+              <td mat-cell *matCellDef="let element"> {{ element.ticketNumber }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="SubscriberId">
+              <th mat-header-cell *matHeaderCellDef > <strong> Subscriber Id </strong> </th>
+              <td mat-cell *matCellDef="let element"> {{ element.SubscriberId }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="bidId">
+              <th mat-header-cell *matHeaderCellDef > <strong> Bid Id </strong> </th>
+              <td mat-cell *matCellDef="let element"> {{ element.bidId }} </td>
+          </ng-container>
+
+            <ng-container matColumnDef="chitName">
+              <th mat-header-cell *matHeaderCellDef><strong> Chit Name </strong> </th>
+              <td mat-cell *matCellDef="let element"> {{ element.chitName }} </td>
+            </ng-container>
+  
+            <ng-container matColumnDef="firstname">
+              <th mat-header-cell *matHeaderCellDef><strong> Client Name </strong></th>
+              <td mat-cell *matCellDef="let element"> {{ element.firstname }} </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="bidAmount">
+              <th mat-header-cell *matHeaderCellDef><strong> Bid Amount </strong> </th>
+              <td mat-cell *matCellDef="let element"> {{ element.bidAmount }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="SubscriptionPayable">
+              <th mat-header-cell *matHeaderCellDef><strong> Subscription Payable </strong> </th>
+              <td mat-cell *matCellDef="let element"> {{ element.SubscriptionPayable }}/- </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Action">
+              <th mat-header-cell *matHeaderCellDef > <strong> Action </strong> </th>
+              <td mat-cell *matCellDef="let element"> {{ element.Action }} 
+              <button mat-raised-button color="primary" class="loadButton">
+              Pay Now
+            </button>
+          </td>
+          </ng-container>
+  
+           
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"  class="header-row"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="viewPayoutEntry(row)" class="select-row"></tr>
+        
+          </table>
+          <mat-paginator [pageSizeOptions]="[2, 4, 6]" showFirstLastButtons></mat-paginator>
+        </div>
+  
+        </mat-card-content>
+        <!-- <mat-card-actions fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="5px"> -->
+          
+          <!-- <button mat-raised-button color="primary"  (click)="advaApproval()">Submit</button> -->
+        <!-- </mat-card-actions> -->
+  
+      </form>
+  
+    </mat-card>
+  
+  </div>
+  

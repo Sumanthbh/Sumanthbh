@@ -1,0 +1,153 @@
+<mat-card class="chitgroup-card">
+
+  <mat-card-header fxLayout="column" class="header">
+
+    <mat-card-title-group class="header-title-chitgroup">
+
+      <div class="profile-image-container">
+        <div>
+          <img mat-card-md-image class="profile-image"
+            src="assets/images/group_placeholder.png">
+        </div>
+      </div>
+
+      <div class="mat-typography chitgroup-card-title">
+        <mat-card-title>
+          <h3>
+            <i class="fa fa-stop" [ngClass]="'chitgroups.'+chitgroupViewData.status|statusLookup" [matTooltip]="chitgroupViewData.status.value"></i>
+            Name : {{chitgroupViewData.name}}
+          </h3>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <p>
+            <!-- ChitGroup #: {{chitgroupViewData.id}} | Center Name: {{chitgroupViewData.centerName}} -->
+            <!-- Status : {{chitgroupViewData.status}}<br/> -->
+            Branch Name: {{chitgroupViewData.officeName}}<br/>
+            | Staff: {{chitgroupViewData.staffName || 'Unassigned'}}<br/> 
+            Start Date : {{(chitgroupViewData.startdate)?(chitgroupViewData.startdate|date) :''}}<br/>
+            <!-- <span *ngIf="!chitgroupViewData.active">
+             Closure Date: {{chitgroupViewData.timeline.closedOnDate | date}}
+            </span> -->
+          </p>
+        </mat-card-subtitle>
+      </div>
+
+      <div class="chitgroup-meeting" fxLayoutAlign="start start" *ngIf="chitgroupViewData.status === 20">
+        <div >
+          <!-- <p> -->
+            <!-- <button class="notification" (click)="openDialog3()">
+            <span ><i class="fa fa-bell"></i> </span>
+            <span class="badge">2</span> -->
+          
+        <!-- </button> -->
+             <br/>
+             <span class="span"> Auction Date :</span> <span class="blink_me">{{chitgroupViewData.nextauctiondate? (chitgroupViewData.nextauctiondate | date) : ''}}</span>
+             <br/>
+             <span class="span">Current Cycle:</span> <span class="blink_me">{{chitgroupViewData.currentcycle? chitgroupViewData.currentcycle : 'Not Started'}}</span>
+             <br/>
+             <span class="span">Bid Minutes Filing due date:</span> <span class="blink_me">{{filling.bidMinutesFilingDueDate? (filling.bidMinutesFilingDueDate | date) : '' }}</span>
+          <!-- </p> -->
+        </div>
+      </div>
+
+      <div class="chitgroup-meeting" fxLayoutAlign="start start" *ngIf="chitgroupViewData.status === 30">
+        <div>
+        <span *ngIf="chitgroupViewData.status === 30">
+          <button class="notification" mat-raised-button  *mifosxHasPermission="'UPDATE_CHITGROUP'" (click)="openDialog3()">
+            <i class="fa fa-bell"></i>
+        <span class="badge">2</span>
+          </button>
+        </span>
+      </div>
+    </div>
+
+    </mat-card-title-group>
+
+    <mat-card-actions class="chitgroup-actions" *ngIf="chitgroupViewData.status !== 30">
+
+        <span *ngIf="chitgroupViewData.status === 10">
+          <button mat-raised-button  *mifosxHasPermission="'UPDATE_CHITGROUP'" (click)="doAction('Activate')">
+            <i class="fa fa-check-sign"></i>Activate</button>
+        </span>
+        <button mat-raised-button *mifosxHasPermission="'UPDATE_CHITGROUP'" (click)="doAction('Edit')">
+          <i class="fa fa-edit"></i>Edit</button>
+        <button mat-raised-button *mifosxHasPermission="'UPDATE_CHITGROUP'" (click)="doAction('Manage Subscribers')">
+          <i class="fa fa-plus"></i>Manage Subscribers</button>
+        <span *ngIf="chitgroupViewData.status === 20">  
+          <button mat-raised-button *mifosxHasPermission="'UPDATE_CHITGROUP'" [disabled] = "!ValidateCycle()" (click)="doAction('Enter Bids')">
+            <i class="fa fa-exchange"></i>Enter Bids</button>
+          <button mat-raised-button *mifosxHasPermission="'UPDATE_CHITGROUP'" (click)="openDialog('Allot Prize Money')">
+            <i class="fa fa-user"></i>Allot Prize Money</button>
+        </span>
+
+        <!-- <mat-dialog-content>
+          The First Auction is always paid to company 
+        <mat-checkbox>
+          Has everyone paid EMI's
+        </mat-checkbox>
+      </mat-dialog-content>
+        <mat-dialog-actions align="end">
+          <button mat-button mat-dialog-close>Cancel</button>
+          <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Proceed</button>
+        </mat-dialog-actions> -->
+
+        <!-- <button mat-raised-button *ngIf="chitgroupViewData.active" [matMenuTriggerFor]="AccountApplications">
+          <i class="fa fa-file"></i>Applications</button>
+        <mat-menu #AccountApplications="matMenu">
+          <span *ngIf="chitgroupViewData.clientMembers">
+            <button mat-menu-item *mifosxHasPermission="'CREATE_LOAN'">Bulk JLG Loan Application</button></span>
+          <button mat-menu-item *mifosxHasPermission="'CREATE_SAVINGSACCOUNT'" [routerLink]="['savings-accounts', 'create']">ChitGroup Saving Application</button>
+          <button mat-menu-item *mifosxHasPermission="'CREATE_LOAN'">ChitGroup Loan Application</button>
+        </mat-menu> -->
+
+        <button mat-raised-button [matMenuTriggerFor]="More">More</button>
+        <mat-menu #More="matMenu">
+          <!-- <span *ngIf="chitgroupViewData.collectionMeetingCalendar">
+            <button mat-menu-item *mifosxHasPermission="'SAVEORUPDATEATTENDANCE_MEETING'" (click)="doAction('Attendance')">Attendance</button></span>
+          <span *ngIf="!chitgroupViewData.staffId">
+            <button mat-menu-item *mifosxHasPermission="'ASSIGNSTAFF_GROUP'" (click)="doAction('Assign Staff')">Assign Staff</button></span>
+          <span *ngIf="chitgroupViewData.staffId">
+            <button mat-menu-item *mifosxHasPermission="'UNASSIGNSTAFF_GROUP'" (click)="doAction('Unassign Staff')">Unassign Staff</button></span> -->
+          <span *ngIf="chitgroupViewData.status ===10">
+            <button mat-menu-item *mifosxHasPermission="'UPDATE_CHITGROUP'" (click)="doAction('Delete')">Delete</button></span>
+            <span *ngIf="chitgroupViewData.status ===20">
+            <button mat-menu-item *mifosxHasPermission="'UPDATE_CHITGROUP'" [disabled] = "ValidateStartCycle()" (click)="nextCycle('Start New Chit Cycle')">Start New Chit Cycle</button></span>
+          <span *ngIf="chitgroupViewData.status ===20">
+            <button mat-menu-item *mifosxHasPermission="'UPDATE_CHITGROUP'" [disabled] = "!ValidateLastCycle()" (click)="closeGroup('Close')">Close</button></span>
+        </mat-menu>
+
+    </mat-card-actions>
+
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <span *ngIf="chitgroupViewData.status !== 10">
+    <nav mat-tab-nav-bar class="navigation-tabs">
+      <a mat-tab-link [routerLink]="['./summary']" routerLinkActive #summary="routerLinkActive"
+      [active]="summary.isActive">
+        Summary
+      </a>
+      <a mat-tab-link [routerLink]="['./subscribers']"routerLinkActive #subscribers="routerLinkActive"
+      [active]="subscribers.isActive">
+        Subscribers List
+      </a>
+      <!-- <a mat-tab-link [routerLink]="['./committee']" routerLinkActive #committee="routerLinkActive"
+      [active]="committee.isActive">
+        Committee
+      </a> -->
+      <!-- <span *ngFor="let chitgroupDatatable of chitgroupDatatables">
+        <a mat-tab-link *mifosxHasPermission="'READ_' + chitgroupDatatable.registeredTableName"
+          [routerLink]="['./datatables',chitgroupDatatable.registeredTableName]"
+          routerLinkActive #datatable="routerLinkActive" [active]="datatable.isActive">
+          {{chitgroupDatatable.registeredTableName}}
+        </a>
+      </span> -->
+    </nav>
+  </span>
+
+    <router-outlet></router-outlet>
+
+  </mat-card-content>
+
+</mat-card>

@@ -1,0 +1,92 @@
+<div class="container">
+
+  <mat-horizontal-stepper class="mat-elevation-z8" labelPosition="bottom" #clientStepper>
+
+    <ng-template matStepperIcon="number">
+      <fa-icon icon="pencil-alt" size="sm"></fa-icon>
+    </ng-template>
+
+    <ng-template matStepperIcon="edit">
+      <fa-icon icon="pencil-alt" size="sm"></fa-icon>
+    </ng-template>
+
+    <ng-template matStepperIcon="done">
+      <fa-icon icon="check" size="sm"></fa-icon>
+    </ng-template>
+
+    <ng-template matStepperIcon="error">
+      <fa-icon icon="exclamation-triangle" size="lg"></fa-icon>
+    </ng-template>
+
+    <ng-template matStepperIcon="preview">
+      <fa-icon icon="eye" size="sm"></fa-icon>
+    </ng-template>
+
+    <mat-step [stepControl]="clientGeneralForm">
+
+      <ng-template matStepLabel>Personal Info</ng-template>
+
+      <mifosx-client-general-step [clientTemplate]="clientTemplate"
+          [addressStep]="clientAddressStep.createClientAddressForm"
+      ></mifosx-client-general-step>
+
+    </mat-step>
+
+    <mat-step [stepControl]="clientAddressForm">
+
+      <ng-template matStepLabel>Address</ng-template>
+
+      <mifosx-client-address-step 
+        [clientTemplate]="clientTemplate"
+        [clientAddressFieldConfig]="clientAddressFieldConfig"
+      >
+      </mifosx-client-address-step>
+
+    </mat-step>
+
+    <mat-step>
+
+      <ng-template matStepLabel>Family Members</ng-template>
+
+      <mifosx-client-family-members-step [clientTemplate]="clientTemplate"
+      [addressStep]="clientAddressStep.address"
+      >
+
+      </mifosx-client-family-members-step>
+
+    </mat-step>
+
+    <!-- <mat-step>
+
+      <ng-template matStepLabel>Nominee</ng-template>
+
+      <mifosx-client-nominee-step 
+        [clientTemplate]="clientTemplate"
+      >
+      </mifosx-client-nominee-step>
+
+    </mat-step> -->
+
+    <mat-step>
+
+      <ng-template matStepLabel>Financial Details</ng-template>
+      <mifosx-client-fin-details-step ></mifosx-client-fin-details-step>
+
+    </mat-step>
+        
+    <mat-step *ngIf="clientGeneralForm.valid && clientAddressForm.valid" completed>
+
+      <ng-template matStepLabel>Preview</ng-template>
+
+      <mifosx-client-preview-step
+        [clientTemplate]="clientTemplate"
+        [clientAddressFieldConfig]="clientAddressFieldConfig"
+        [client]="client" (submit)="submit()"
+      >
+      </mifosx-client-preview-step>
+
+    </mat-step>
+
+  </mat-horizontal-stepper>
+
+</div>

@@ -1,0 +1,213 @@
+<div class="add-family-member-container">
+
+  <form [formGroup]="editFamilyMemberForm" (ngSubmit)="submit()">
+
+    <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="start center">
+  
+      <mat-form-field fxFlex="calc(45%)">
+        <mat-label>Name</mat-label>
+        <input formControlName="firstName" required matInput />
+        <mat-error *ngIf="editFamilyMemberForm.controls.firstName.hasError('required')">
+          Name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="calc(45%)">
+        <mat-label>Relationship</mat-label>
+        <mat-select formControlName="relationshipId" required>
+          <mat-option *ngFor="let relation of addFamilyMemberTemplate.relationshipIdOptions" [value]="relation.id">
+            {{ relation.name  }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="editFamilyMemberForm.controls.relationshipId.hasError('required')">
+          Relationship is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field fxFlex="calc(30%)">
+        <mat-label>Gender</mat-label>
+        <mat-select formControlName="genderId">
+          <mat-option *ngFor="let gender of addFamilyMemberTemplate.genderIdOptions" [value]="gender.id">
+            {{ gender.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="calc(30%)">
+        <mat-label>Age</mat-label>
+        <input type="number" formControlName="age" matInput />
+      </mat-form-field>
+
+      <mat-checkbox formControlName="isDependent" labelPosition="before" fxFlex="calc(30%)">Is Dependent?
+      </mat-checkbox>
+
+      <mat-form-field fxFlex="calc(30%)">
+        <mat-label>Occupation</mat-label>
+        <mat-select formControlName="professionId">
+          <mat-option *ngFor="let profession of addFamilyMemberTemplate.professionIdOptions" [value]="profession.id">
+            {{ profession.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="calc(25%)">
+        <mat-label>Educational Qualification</mat-label>
+        <mat-select formControlName="qualificationId">
+          <mat-option *ngFor="let quali of addFamilyMemberTemplate.qualificationIdOptions" [value]="quali.id">
+            {{ quali.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field fxFlex="calc(25%)">
+        <mat-label>Contact No</mat-label>
+        <input type="number" formControlName="mobileNumber" matInput />
+      </mat-form-field>
+
+      <mat-checkbox [disabled]="plus>1" formControlName="isnominee"  labelPosition="before" [(ngModel)]="isNomineeClicked"  *ngIf="!nomineeExists"  fxFlex="30%" class="margin-v">Is Nominee?</mat-checkbox>
+
+      <mat-form-field fxFlex="calc(35%)" *ngIf="isNomineeClicked">
+        <mat-label>Nominee DOB</mat-label>
+        <input required formControlName="dateOfBirth" matInput [max]="maxDateDob" [min]="minDateDob" [matDatepicker]="dueDatePicker">
+        <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #dueDatePicker></mat-datepicker>
+        <mat-error *ngIf="editFamilyMemberForm.controls.dateOfBirth.hasError('required')">
+          Date of birth is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field  fxFlex="calc(30%)" *ngIf="isNomineeClicked">
+        <mat-label>Nominee Aadhaar</mat-label>
+        <input type="text" matInput maxLength="12" required formControlName="nomadhar">
+        <mat-error *ngIf="editFamilyMemberForm.controls.nomadhar.hasError('required')">
+          Nominee Aadhaar number is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field fxFlex="calc(35%)" *ngIf="isNomineeClicked">
+        <mat-label>Nominee Secondary ID Type</mat-label>
+        <mat-select required formControlName="nomsecondaryid">
+          <mat-option *ngFor="let idProof of idproofOptions" [value]="idProof.id">
+            {{ idProof.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="editFamilyMemberForm.controls.nomsecondaryid.hasError('required')">
+          Field is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field fxFlex="calc(30%)" *ngIf="isNomineeClicked">
+        <mat-label>Nominee Secondary ID Number</mat-label>
+        <input matInput required formControlName="nomsecondaryidnum">
+        <mat-error *ngIf="editFamilyMemberForm.controls.nomsecondaryidnum.hasError('required')">
+          Nominee Secondary Identity Proof Number is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <BR />
+
+    <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+
+      
+      <mat-checkbox fxFlex="58%" formControlName="isnomineeaddr" labelPosition="before" [(ngModel)]="nomineeAddressClicked" *ngIf="isNomineeClicked"  class="margin-v">
+        Is Nominee Address same as Applicant Address ? 
+      </mat-checkbox>
+ 
+      <mat-form-field fxFlex="48%" *ngIf="isNomineeClicked && nomineeAddressClicked">
+        <mat-label>Pin Code</mat-label>
+        <input matInput type="number" required formControlName="nompincode">
+        <mat-error *ngIf="editFamilyMemberForm.controls.nompincode.hasError('required')">
+          Pin Code is <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="editFamilyMemberForm.controls.nompincode.hasError('pattern')">
+          Pin Code should be 6 digit long
+        </mat-error>
+        </mat-form-field>
+        <button type="button" style="height: 1cm; align-self:center;" *ngIf="isNomineeClicked && nomineeAddressClicked && !editFamilyMemberForm.controls.nompincode.hasError('required') && !editFamilyMemberForm.controls.nompincode.hasError('pattern')" mat-raised-button color="primary" (click)="queryPincode()">
+          <fa-icon icon="search"></fa-icon>
+        </button>
+        
+
+        <mat-form-field fxFlex="30%" *ngIf="isNomineeClicked && nomineeAddressClicked">
+          <mat-label>State</mat-label>
+          <mat-select required formControlName="nomstate">
+            <mat-option *ngFor="let state of stateProvinceIdOptions" [value]="state.id">
+              {{ state.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="editFamilyMemberForm.controls.nomstate.hasError('required')">
+            State is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="30%" *ngIf="isNomineeClicked && nomineeAddressClicked">
+          <mat-label>District</mat-label>
+          <mat-select required formControlName="nomdistrict">
+            <mat-option *ngFor="let district of districtIdOptions" [value]="district.id">
+              {{ district.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="editFamilyMemberForm.controls.nomdistrict.hasError('required')">
+            District is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="30%" *ngIf="isNomineeClicked && nomineeAddressClicked">
+          <mat-label>Taluka</mat-label>
+          <mat-select required formControlName="nomtaluka">
+            <mat-option *ngFor="let taluka of talukaIdOptions" [value]="taluka.id">
+              {{ taluka.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="editFamilyMemberForm.controls.nomtaluka.hasError('required')">
+            Taluka is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="25%" *ngIf="isNomineeClicked  && nomineeAddressClicked">
+          <mat-label>Village / Town</mat-label>
+        <input matInput required formControlName="nomvillage" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let option of villageOptions" [value]="option.AreaName">
+            {{option.AreaName}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="editFamilyMemberForm.controls.nomvillage.hasError('required')">
+          Village / Town is <strong>required</strong>
+        </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="30%" *ngIf="isNomineeClicked && nomineeAddressClicked">
+          <mat-label>Area Locality</mat-label>
+          <input matInput required formControlName="nomarealocality">
+          <mat-error *ngIf="editFamilyMemberForm.controls.nomarealocality.hasError('required')">
+            Area Locality is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="30%" *ngIf="isNomineeClicked && nomineeAddressClicked">
+          <mat-label>Street Number</mat-label>
+          <input matInput required formControlName="nomstreetno">
+          <mat-error *ngIf="editFamilyMemberForm.controls.nomstreetno.hasError('required')">
+            Street Number is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+      <mat-form-field fxFlex="30%" *ngIf="isNomineeClicked && nomineeAddressClicked">
+        <mat-label>House Number</mat-label>
+        <input matInput required formControlName="nomhouseno">
+        <mat-error *ngIf="editFamilyMemberForm.controls.nomhouseno.hasError('required')">
+          House Number is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div fxLayout="row" fxLayoutGap="32px" fxLayoutAlign="center">
+      <button type="button" mat-raised-button [routerLink]="['../../']">Cancel</button>
+      <button type="submit" mat-raised-button color="primary" [disabled]="submitBtnDisable()">Submit</button>
+    </div>
+
+  </form>
+
+</div>

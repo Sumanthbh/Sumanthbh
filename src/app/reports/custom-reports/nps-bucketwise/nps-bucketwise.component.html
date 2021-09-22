@@ -1,0 +1,81 @@
+<mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</mat-form-field>
+<div class="scroll">
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+        <ng-container matColumnDef="BranchName">
+          <mat-header-cell *matHeaderCellDef mat-sort-header><strong> Branch Name </strong></mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.BranchName}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="ChitGroupWithTicketNumber">
+          <mat-header-cell *matHeaderCellDef mat-sort-header><strong> Group Name with Ticket No </strong></mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.ChitGroupWithTicketNumber}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="GroupStartDate">
+          <mat-header-cell *matHeaderCellDef><strong> Group Start Date</strong></mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.GroupStartDate}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="SubscriberName">
+          <mat-header-cell *matHeaderCellDef><strong >Subscriber Name</strong> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.SubscriberName}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="DemandAmount">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> <strong>Demand </strong></mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.DemandAmount}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="NumberOfCollectedInst">
+          <mat-header-cell *matHeaderCellDef mat-sort-header><strong>No. of Collected Inst </strong></mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.NumberOfCollectedInst}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="CollectedAmount">
+          <mat-header-cell *matHeaderCellDef mat-sort-header><strong> Collection Amount</strong> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.CollectedAmount}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="NumberOfDueInst">
+          <mat-header-cell *matHeaderCellDef><strong>No. of Due Inst </strong></mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.NumberOfDueInst}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="Days_1_to_7">
+          <mat-header-cell *matHeaderCellDef mat-sort-header><strong>1-7 Days</strong></mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Days_1_to_7}} </mat-cell>
+        </ng-container>
+  
+  
+        <ng-container matColumnDef="Days_8_to_15">
+          <mat-header-cell *matHeaderCellDef><strong>8-15 Days</strong> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Days_8_to_15}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="Days_16_to_30">
+          <mat-header-cell *matHeaderCellDef><strong>16-30 Days</strong> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Days_16_to_30}} </mat-cell>
+        </ng-container> 
+  
+        <ng-container matColumnDef="Days_31_to_90">
+          <mat-header-cell *matHeaderCellDef> <strong>31-90 Days</strong> </mat-header-cell>
+          <mat-cell *matCellDef="let element" > {{element.Days_31_to_90}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="Days_91_to_180">
+          <mat-header-cell *matHeaderCellDef> <strong>91-180 Days</strong> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Days_91_to_180}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="Above_180_Days">
+          <mat-header-cell *matHeaderCellDef><strong>Above 180 Days</strong> </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Above_180_Days}} </mat-cell>
+        </ng-container>
+  
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</div>
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons> </mat-paginator>

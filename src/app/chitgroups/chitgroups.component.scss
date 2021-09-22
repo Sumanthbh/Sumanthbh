@@ -1,0 +1,30 @@
+.container {
+  .action-button{
+    margin-left: auto;
+  }
+  .search-button{
+    min-width: 30px;
+    margin: 4px;
+  }
+}
+.centerAlign {
+  text-align:center;
+}
+.rightAlign {
+  text-align:right;
+}
+table {
+  width: 100%;
+//table-layout: fixed;
+  tr.select-row:hover {
+    cursor: pointer;
+  }
+}
+.cell {
+  overflow:visible;
+  width: 23%;
+  min-width:23%;
+  //width: auto;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}

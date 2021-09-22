@@ -1,0 +1,42 @@
+<mat-card class="container">
+  <mat-card-content>
+    <div fxFlexFill fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+      <mat-form-field fxFlex="30%">
+        <mat-label>Branch</mat-label>
+        <mat-select required [(ngModel)]="officeId">
+          <mat-option *ngFor="let office of officeOptions" [value]="office.id">
+            {{ office.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field fxFlex="30%">
+        <mat-label>Date:</mat-label>
+        <input matInput [max]="maxDate" [matDatepicker]="datePicker" [(ngModel)]="reportDate">
+        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+        <mat-datepicker #datePicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field fxFlex="30%">
+        <mat-label>Select the Report</mat-label>
+        <mat-select [(ngModel)]="selectedValue">
+          <mat-option *ngFor="let report of reportOptions" [value]="report.reportName">
+            {{ report.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div *ngIf="selectedValue === 'dailycollection'">
+      <mifosx-daily-collection-report [childOfficeId]=officeId [childReportDate]=reportDate>
+      </mifosx-daily-collection-report>
+    </div>
+    <div *ngIf="selectedValue === 'nonstartedgroup'">
+      <mifosx-non-started-group-daily-collection [childOfficeId]=officeId [childReportDate]=reportDate>
+      </mifosx-non-started-group-daily-collection>
+    </div>
+    <div *ngIf="selectedValue === 'psbucketreport'">
+      <mifosx-ps-bucketwise [childOfficeId]=officeId [childReportDate]=reportDate></mifosx-ps-bucketwise>
+    </div>
+    <div *ngIf="selectedValue === 'npsbucketreport'">
+      <mifosx-nps-bucketwise [childOfficeId]=officeId [childReportDate]=reportDate></mifosx-nps-bucketwise>
+    </div>
+  </mat-card-content>
+</mat-card>

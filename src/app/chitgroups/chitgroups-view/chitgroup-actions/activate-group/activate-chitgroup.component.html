@@ -1,0 +1,147 @@
+<div class="container">
+
+  <mat-card>
+
+    <form [formGroup]="activateGroupForm" (ngSubmit)="submit()">
+
+      <mat-card-content>
+        <div class="mat-table">
+          <div class="mat-row">
+            <div class="mat-cell">
+              <mat-label>Required Subscribers &nbsp;&nbsp; <b>{{requiredSusbcribers}}</b></mat-label>
+            </div>
+            <div class="mat-cell">
+              <mat-label> Added Subscriptions  &nbsp;&nbsp; <b>{{addedSubscribers}}</b></mat-label>
+            </div>
+            <div class="mat-cell-r-align">
+                <fa-icon icon="check-circle" *ngIf="subscribersMatch" style ="color:rgb(24, 248, 72) "  size="lg"></fa-icon>
+                <fa-icon icon="times-circle" *ngIf="!subscribersMatch" style ="color:rgb(228, 58, 58) " size="lg"></fa-icon>
+            </div>
+          </div>
+          <div class="mat-row" *ngIf="this.chitgroupData.status !== 10">
+            <div class="mat-cell">
+              <mat-label>Incorrect Status of Chit Group to Activate</mat-label>
+            </div>
+            <div class="mat-cell-r-align">
+              <fa-icon icon="times-circle" style ="color:rgb(228, 58, 58) " size="lg"></fa-icon>
+            </div>
+          </div>
+          <div class="mat-row" *ngIf="fdrFieldsFilled && psoFieldsFilled && ccFieldsFilled">
+            <div class="mat-cell">
+              <mat-label>All required fields have been provided.</mat-label>
+            </div>
+            <div class="mat-cell-r-align">
+              <fa-icon icon="check-circle" style ="color:rgb(24, 248, 72) " size="lg"></fa-icon>
+            </div>
+          </div>
+          <div class="mat-row" *ngIf="!fdrFieldsFilled">
+            <div class="mat-cell">
+              <mat-label>All FDR fields of a Chit Group are required. Please provide.</mat-label>
+            </div>
+            <div class="mat-cell-r-align">
+              <fa-icon icon="times-circle" style ="color:rgb(228, 58, 58) " size="lg"></fa-icon>
+            </div>
+          </div>
+          <div class="mat-row" *ngIf="!psoFieldsFilled">
+            <div class="mat-cell">
+              <mat-label>All PSO fields of a Chit Group are required. Please provide.</mat-label>
+            </div>
+            <div class="mat-cell-r-align">
+              <fa-icon icon="times-circle" style ="color:rgb(228, 58, 58) " size="lg"></fa-icon>
+            </div>
+          </div>
+          <div class="mat-row" *ngIf="!ccFieldsFilled">
+            <div class="mat-cell">
+              <mat-label>All CC fields of a Chit Group are required. Please provide.</mat-label>
+            </div>
+            <div class="mat-cell-r-align">
+              <fa-icon icon="times-circle" style ="color:rgb(228, 58, 58) " size="lg"></fa-icon>
+            </div>
+          </div>
+          <div class="mat-row" *ngIf="!fdrFDChitValueSame">
+            <div class="mat-cell">
+              <mat-label>FDR Deposit Amount should be equal to Chit Value</mat-label>
+            </div>
+            <div class="mat-cell-r-align">
+              <fa-icon icon="times-circle" style ="color:rgb(228, 58, 58) " size="lg"></fa-icon>
+            </div>
+          </div>
+          <div class="mat-row" *ngIf="!fdrFDPeriodChitDurationSame">
+            <div class="mat-cell">
+              <mat-label>FDR Duration should be equal to Chit Duration</mat-label>
+            </div>
+            <div class="mat-cell-r-align">
+              <fa-icon icon="times-circle" style ="color:rgb(228, 58, 58) " size="lg"></fa-icon>
+            </div>
+          </div>
+          <div class="mat-row" *ngIf="subscribersMatch && fdrFDPeriodChitDurationSame && fdrFDChitValueSame && this.chitgroupData.status === 10">
+            <div class="mat-cell">
+              <mat-label>Data validations have passed</mat-label>
+            </div>
+            <div class="mat-cell-r-align">
+              <fa-icon icon="check-circle" style ="color:rgb(24, 248, 72) " size="lg"></fa-icon>
+            </div>
+          </div>
+          <!-- <div class="mat-row">
+            <div class="mat-cell">
+              <mat-label>All Installments are paid? </mat-label>
+            </div>
+            <div class="mat-cell-r-align">
+              <fa-icon icon="check-circle" style ="color:rgb(24, 248, 72) " size="lg"></fa-icon>
+            </div>
+          </div> -->
+
+        </div>
+        <h3>Subscriber Advance Adjustment</h3>
+
+        <div style="border-width: 2px solid;" >
+          <h4 fxFlex="35%">Client Name</h4>
+          <h4 fxFlex="15%">Chit Number</h4>
+          <h4 fxFlex="20%" style="text-align: right;">Advance Paid</h4>          
+          <h4 fxFlex="20%" style="text-align: right;">Advance to Adjust</h4>          
+        </div>
+    
+        <div style="border-width: 2px solid;" formArrayName="activateGroupFormArr" *ngFor="let chitSub of activateGroupFormArr.controls; let i = index;">
+
+          <div fxFlexFill style="border-width: 2px solid; border-color: red;" fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column" [formGroupName]="i">
+
+            <mat-form-field fxFlex="35%">
+              <mat-label></mat-label>
+               <input readonly  matInput formControlName="name">
+            </mat-form-field>
+            <mat-form-field fxFlex="15%">
+              <mat-label></mat-label>
+               <input readonly  matInput formControlName="chitNumber">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="20%">
+              <mat-label></mat-label>
+               <input readonly  matInput formControlName="amount" style="text-align: right;" >
+               <mat-error *ngIf="activateGroupFormArr.at(i).controls.amount.value > 100">
+                <strong>No Advance paid</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="20%">
+              <mat-label></mat-label>
+               <input type="number" matInput formControlName="amountAdjust" style="width:2in; text-align: right; background-color: rgb(199, 215, 250);" >
+               <!-- <mat-error *ngIf="activateGroupFormArr.at(i).controls.amountAdjust.hasError('required')">
+                Advance to Adjust <strong>required</strong>
+              </mat-error> -->
+            </mat-form-field>
+
+          </div>
+        </div>
+
+      </mat-card-content>
+
+      <mat-card-actions fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="5px">
+        <button type="button" mat-raised-button [routerLink]="['../../']">Cancel</button>
+        <button mat-raised-button color="accent" [disabled]="!fdrFDPeriodChitDurationSame || !fdrFDChitValueSame || !fdrFieldsFilled || !psoFieldsFilled || !ccFieldsFilled || !subscribersMatch || someAdvanceMissing || !(this.chitgroupData.status === 10)">Confirm</button>
+      </mat-card-actions>
+
+    </form>
+
+  </mat-card>
+
+</div>

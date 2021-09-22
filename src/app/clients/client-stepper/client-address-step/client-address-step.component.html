@@ -1,0 +1,269 @@
+<form [formGroup]="createClientAddressForm">
+
+  <div class="mat-typography">
+    <H4>Address as per KYC Document (Adhaar)</H4><BR />
+
+    <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+
+      <!-- <p>
+        {{createClientAddressForm.get('kyc_houseNumber').value}}, {{createClientAddressForm.get('kyc_streetNumber').value}}<br/>
+        {{createClientAddressForm.get('kyc_area').value}}, {{createClientAddressForm.get('kyc_landmark').value}}<br/>
+        {{createClientAddressForm.get('kyc_villageTown').value}}, {{getSelectedValue('talukaIdOptions', createClientAddressForm.get('kyc_talukaId')?.value)?.name}}, {{getSelectedValue('districtIdOptions', createClientAddressForm.get('kyc_districtId')?.value)?.name}}<br/>
+        {{getSelectedValue('stateProvinceIdOptions', createClientAddressForm.get('kyc_stateId')?.value)?.name}}, {{createClientAddressForm.get('kyc_pincode').value}}<br /> -->
+
+        <!-- <span>State / Province :
+          {{getSelectedValue('stateProvinceIdOptions',address.stateProvinceId)?.name}}<br /></span>
+        <span>Country :
+          {{getSelectedValue('countryIdOptions',address.countryId)?.name}}<br /></span> -->
+      <!-- </p> -->
+      <mat-form-field fxFlex="20%">
+        <mat-label>House Number</mat-label>
+        <input matInput required formControlName="kyc_houseNumber" (change)="copyAddress()">
+        <mat-error *ngIf="createClientAddressForm.controls.kyc_houseNumber.hasError('required')">
+          House Number is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="20%">
+        <mat-label>Street Number</mat-label>
+        <input matInput required formControlName="kyc_streetNumber" (change)="copyAddress()">
+        <mat-error *ngIf="createClientAddressForm.controls.kyc_streetNumber.hasError('required')">
+          Street Number is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="48%">
+          <mat-label>Area Locality</mat-label>
+          <input matInput required formControlName="kyc_area" (change)="copyAddress()">
+          <mat-error *ngIf="createClientAddressForm.controls.kyc_area.hasError('required')">
+            Area Locality is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+      <mat-form-field fxFlex="18%">
+        <mat-label>Pin Code</mat-label>
+        <input matInput type="number" required formControlName="kyc_pincode" (change)="copyAddress()">
+        <mat-error *ngIf="createClientAddressForm.controls.kyc_pincode.hasError('required')">
+          Pin Code is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <button style="height: 1cm; align-self:center;" *ngIf="!createClientAddressForm.controls.kyc_pincode.hasError('required') && !createClientAddressForm.controls.kyc_pincode.hasError('pattern')" mat-raised-button color="primary" (click)="queryPincode()">
+        <fa-icon icon="search"></fa-icon>
+      </button>
+      <mat-form-field fxFlex="18%">
+        <mat-label>Village / Town</mat-label>
+        <input matInput required formControlName="kyc_villageTown" [matAutocomplete]="auto" (change)="copyAddress()">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of kycvillageOptions" [value]="option.AreaName">
+            {{option.AreaName}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="createClientAddressForm.controls.kyc_villageTown.hasError('required')">
+          Village / Town is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="18%">
+        <mat-label>Taluka</mat-label>
+        <mat-select required formControlName="kyc_talukaId" (selectionChange)="copyAddress()">
+          <mat-option *ngFor="let taluka of talukaOptions" [value]="taluka.id">
+            {{ taluka.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="createClientAddressForm.controls.kyc_talukaId.hasError('required')">
+          Taluka is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="18%">
+        <mat-label>District</mat-label>
+        <mat-select required formControlName="kyc_districtId" (selectionChange)="copyAddress()">
+          <mat-option *ngFor="let district of districtOptions" [value]="district.id">
+            {{ district.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="createClientAddressForm.controls.kyc_districtId.hasError('required')">
+          District is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="18%">
+        <mat-label>State</mat-label>
+        <mat-select required formControlName="kyc_stateId" (selectionChange)="copyAddress()">
+          <mat-option *ngFor="let state of stateOptions" [value]="state.id">
+            {{ state.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="createClientAddressForm.controls.kyc_stateId.hasError('required')">
+          State is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      
+        <mat-form-field fxFlex="45%">
+          <mat-label>Landmark</mat-label>
+          <input matInput formControlName="kyc_landmark" (change)="copyAddress()">
+        </mat-form-field>
+      </div>
+
+    <BR />
+
+    <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+
+      <H4>Is Communication Address different from KYC Address? </H4>
+      <mat-checkbox fxFlex="58%" labelPosition="before" [checked]="kycClicked" (change)="isKycAddSameClicked()" class="margin-v">
+      </mat-checkbox>
+
+      <mat-form-field fxFlex="20%" *ngIf="kycClicked">
+        <mat-label>House Number</mat-label>
+        <input matInput required formControlName="c_houseNumber">
+        <mat-error *ngIf="createClientAddressForm.controls.c_houseNumber.hasError('required')">
+          House Number is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="20%" *ngIf="kycClicked">
+        <mat-label>Street Number</mat-label>
+        <input matInput required formControlName="c_streetNumber">
+        <mat-error *ngIf="createClientAddressForm.controls.c_streetNumber.hasError('required')">
+          Street Number is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="48%" *ngIf="kycClicked">
+        <mat-label>Area Locality</mat-label>
+        <input matInput required formControlName="c_area">
+        <mat-error *ngIf="createClientAddressForm.controls.c_area.hasError('required')">
+          Area Locality is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      
+      <mat-form-field fxFlex="18%" *ngIf="kycClicked">
+        <mat-label>Pin Code</mat-label>
+        <input matInput type="number" required formControlName="c_pincode">
+        <mat-error *ngIf="createClientAddressForm.controls.c_pincode.hasError('required')">
+          Pin Code is <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="createClientAddressForm.controls.c_pincode.hasError('pattern')">
+          Pin Code should be numeric and 6 digit long
+        </mat-error>
+      </mat-form-field>
+      <button style="height: 1cm; align-self:center;" *ngIf="kycClicked && !createClientAddressForm.controls.c_pincode.hasError('required') && !createClientAddressForm.controls.c_pincode.hasError('pattern')" mat-raised-button color="primary" (click)="queryPincodeCorres()">
+        <fa-icon icon="search"></fa-icon>
+      </button>
+      <mat-form-field fxFlex="18%" *ngIf="kycClicked">
+        <mat-label>Village / Town</mat-label>
+        <input matInput required formControlName="c_villageTown" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let option of villageOptions" [value]="option.AreaName">
+            {{option.AreaName}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="createClientAddressForm.controls.c_villageTown.hasError('required')">
+          Village / Town is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="18%" *ngIf="kycClicked">
+        <mat-label>Taluka</mat-label>
+        <mat-select required formControlName="c_talukaId">
+          <mat-option *ngFor="let taluka of talukaOptions" [value]="taluka.id">
+            {{ taluka.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="createClientAddressForm.controls.c_talukaId.hasError('required')">
+          Taluka is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="18%" *ngIf="kycClicked">
+        <mat-label>District</mat-label>
+        <mat-select required formControlName="c_districtId">
+          <mat-option *ngFor="let district of districtOptions" [value]="district.id">
+            {{ district.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="createClientAddressForm.controls.c_districtId.hasError('required')">
+          District is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="18%" *ngIf="kycClicked">
+        <mat-label>State</mat-label>
+        <mat-select required formControlName="c_stateId">
+          <mat-option *ngFor="let state of stateOptions" [value]="state.id">
+            {{ state.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="createClientAddressForm.controls.c_stateId.hasError('required')">
+          State is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field fxFlex="60%" *ngIf="kycClicked">
+        <mat-label>Landmark</mat-label>
+        <input matInput formControlName="c_landmark">
+      </mat-form-field>
+
+      <mat-divider border-top-width="0.1px" border-top-color="red" fxFlexFill></mat-divider>
+    </div>
+    <!-- <h3>Address</h3>
+
+  <div fxLayout="row" fxLayoutAlign="flex-end" class="m-b-20">
+    <button mat-raised-button color="primary" (click)="addAddress()">
+      <fa-icon icon="plus"></fa-icon>&nbsp;&nbsp;Add
+    </button>
+  </div> 
+
+  <mat-accordion>
+
+    <mat-expansion-panel *ngFor="let address of clientAddressData; index as i" class="address">
+
+      <mat-expansion-panel-header>
+
+        <mat-panel-title>
+          {{ getSelectedValue('addressTypeIdOptions',address.addressTypeId)?.name }}
+        </mat-panel-title>
+
+        <mat-panel-description>
+          {{ address.relationship }}
+        </mat-panel-description>
+
+      </mat-expansion-panel-header>
+
+      <mat-divider></mat-divider>
+
+      <div class="address-actions" fxLayout="row" fxLayoutAlign="flex-end center">
+        <button mat-button color="primary" (click)="editAddress(address,i)">
+          <fa-icon icon="edit"></fa-icon>
+        </button>
+        <button mat-button color="warn" (click)="deleteAddress(address,i)">
+          <fa-icon icon="trash"></fa-icon>
+        </button>
+        <mat-slide-toggle [checked]="address.isActive" (change)="toggleAddress(address)"></mat-slide-toggle>
+      </div>
+
+      <p>
+        <span *ngIf="isFieldEnabled('street')">Street : {{address.street}}<br /></span>
+        <span *ngIf="isFieldEnabled('addressLine1')">Address Line 1 : {{address.addressLine1}}<br /></span>
+        <span *ngIf="isFieldEnabled('addressLine2')">Address Line 2 : {{address.addressLine2}}<br /></span>
+        <span *ngIf="isFieldEnabled('addressLine3')">Address Line 3 : {{address.addressLine3}}<br /></span>
+        <span *ngIf="isFieldEnabled('townVillage')">Town / Village : {{address.townVillage}}<br /></span>
+        <span *ngIf="isFieldEnabled('city')">City : {{address.city}}<br /></span>
+        <span *ngIf="isFieldEnabled('stateProvinceId')">State / Province :
+          {{getSelectedValue('stateProvinceIdOptions',address.stateProvinceId)?.name}}<br /></span>
+        <span *ngIf="isFieldEnabled('countryId')">Country :
+          {{getSelectedValue('countryIdOptions',address.countryId)?.name}}<br /></span>
+        <span *ngIf="isFieldEnabled('postalCode')">Postal Code : {{address.postalCode}}<br /></span>
+        <span *ngIf="isFieldEnabled('isActive')">Active Status : {{address.isActive}}<br /></span>
+      </p>
+
+    </mat-expansion-panel>
+
+  </mat-accordion>
+  -->
+
+    <div fxLayout="row" class="margin-t" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="2%">
+      <button mat-raised-button matStepperPrevious>
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;&nbsp;
+        Previous
+      </button>
+      <button mat-raised-button matStepperNext>
+        Next&nbsp;&nbsp;
+        <fa-icon icon="arrow-right"></fa-icon>
+      </button>
+      <!-- <button (click)="findInvalidControl()"> Find Invalid Controls</button> -->
+    </div>
+
+
+  </div>
+</form>

@@ -1,0 +1,217 @@
+<form [formGroup]="clientFinDetailForm">
+
+  <div>
+    <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
+      <table calss='table'>
+        <tr class='header' >
+          <td fxFlex="20%">&nbsp;</td>
+          <td fxFlex="60%">Major Details</td>
+          <td fxFlex="20%" style="text-align: right;">Amount (Rs)</td>
+        </tr>
+        <tr class='table-row'>
+          <td fxFlex="20%" class='table-h3'>Monthly Sales (A)</td>
+          <td fxFlex="60%" class='data'>Daily sales ( Note : 25 days in month to calculate)</td>
+          <td fxFlex="20%" class='table-rightCell'>
+            <tr class="table-inputgreen">
+              <input matInput formControlName="incdailysales" (change)="reCalculate()">
+            </tr>
+          </td>
+        </tr>
+        <tr>
+          <td fxFlex="20%" class='table-h3'>Less: <br/>Expenses</td>
+          <td fxFlex="60%">
+            <tr style="border: 2px; border-color: red;">
+              <td>Raw material Purchase cost</td>
+            </tr>
+            <tr style="border: 2px; border-color: red;">
+              <td>Salary to staff</td>
+            </tr>
+            <tr>
+              <td>Expenses (Power / Fuel / Electricity / Water Expenses/Telephone)</td>
+            </tr>
+            <tr>
+              <td>Repair and maintenance expense of Plant and Machinery</td>
+            </tr>
+            <tr>
+              <td>Commission and brokerage</td>
+            </tr>
+            <tr>
+              <td>Interest Expense</td>
+            </tr>
+            <tr>
+              <td>Office Rent expense</td>
+            </tr>
+            <tr>
+              <td>Travelling and Transportation on sales</td>
+            </tr>
+            <tr>
+              <td fxFlex="30%">Other Expenses</td>
+              <td fxFlex="60%">
+                <input matInput type="text" class="table-fieldText"  formControlName="otherexpensestf">
+              </td>
+              <td  fxFlex="10%"></td>
+            </tr>
+          </td>
+          <td fxFlex="20%" class='table-rightCell' style="align-items: flex-end;">
+            <tr class="table-inputpeach" style="align-items: flex-end;">
+              <td>
+                <input matInput formControlName="exprawmaterial" (change)="reCalculate()">
+              </td>
+            </tr>
+            <tr class="table-inputpeach" style="align-items: flex-end;">
+              <td>
+                <input matInput formControlName="expstaffsal" (change)="reCalculate()">
+              </td>
+            </tr>
+            <tr class="table-inputpeach">
+              <td>
+                <input matInput formControlName="exppowertelephone" (change)="reCalculate()">
+              </td>
+            </tr>
+            <tr class="table-inputpeach">
+              <td>
+                <input matInput formControlName="exprepairsmaintainance" (change)="reCalculate()">
+              </td>
+            </tr>
+            <tr class="table-inputpeach">
+              <td>
+                <input matInput formControlName="expcommbrokerage" (change)="reCalculate()">
+              </td>
+            </tr>
+            <tr class="table-inputpeach">
+              <td>
+                <input matInput formControlName="expinterest" (change)="reCalculate()">
+              </td>
+            </tr>
+            <tr class="table-inputpeach">
+              <td>
+                <input matInput  formControlName="expofficerent" (change)="reCalculate()">
+              </td>
+            </tr>
+            <tr class="table-inputpeach">
+              <td>
+                <input matInput formControlName="exptravel" (change)="reCalculate()">
+              </td>
+            </tr>
+            <tr class="table-inputpeach">
+              <td>
+                <input matInput formControlName="expothers" (change)="reCalculate()">
+              </td>
+            </tr>
+          </td>
+        </tr>
+        <tr>
+          <td fxFlex="20%" class='table-h3'>Total Expenses (B)</td>
+          <td fxFlex="60%" class='data'>&nbsp;</td>
+          <td fxFlex="20%" class='table-inputblue'>
+            <input matInput readonly formControlName="temp_tot_exp">
+          </td>
+        </tr>
+        <tr>
+          <td fxFlex="20%" class='table-h3'>Business Profit (A - B)</td>
+          <td fxFlex="60%" class='data'>&nbsp;</td>
+          <td fxFlex="20%" class='table-inputblue'>
+            <input matInput readonly formControlName="totbusinessprofit">
+          </td>
+        </tr>
+        <tr class='table-row'>
+          <td fxFlex="20%" class='table-h3'>Add: <br/>
+            Any other Sources of Income (C)</td>
+          <td fxFlex="60%">
+            <tr>
+              <td>Spouse’s Income</td>
+            </tr>
+            <tr>
+              <td>Rental Income</td>
+            </tr>
+            <tr>
+              <td>Interest Income</td>
+            </tr>
+            <tr>
+              <td  fxFlex="30%">Other Source of Income</td>
+              <td  fxFlex="60%">
+                <input matInput type="text" class="table-fieldText"  formControlName="othersrcinctf">
+              </td>
+              <td  fxFlex="10%"></td>
+            </tr>
+          </td>
+          <td fxFlex="20%" class='table-rightCell'>
+            <tr class="table-inputgreen">
+              <td>
+                <input matInput  formControlName="incspouse" (change)="reCalculate()">
+              </td>
+            </tr>
+            <tr class="table-inputgreen">
+              <td >
+                <input matInput  formControlName="incrent" (change)="reCalculate()">
+              </td>
+            </tr>
+            <tr class="table-inputgreen">
+              <td>
+                <input matInput  formControlName="incinterest" (change)="reCalculate()">
+              </td>
+            </tr>
+            <tr class="table-inputgreen">
+              <td>
+                <input matInput formControlName="incothers" (change)="reCalculate()">
+              </td>
+            </tr>
+          </td>
+        </tr>
+        <tr>
+          <td fxFlex="20%" class='table-h3'><span>Total Household Income <br/> (D = A - B + C)</span></td>
+          <td fxFlex="60%" class='data'>&nbsp;</td>
+          <td fxFlex="20%" class='table-inputblue'>
+            <input matInput readonly formControlName="tothouseholdinc">
+          </td>
+        </tr>
+        <tr>
+          <td fxFlex="20%" class='table-h3'>Net Income After Expenses (E)</td>
+          <td fxFlex="60%" class='data'>50% of total Household income</td>
+          <td fxFlex="20%" class='table-inputblue'>
+            <input matInput readonly formControlName="exphousehold">
+          </td>
+        </tr>
+        <tr>
+          <td fxFlex="20%" class='table-h3'>Obligations (F)</td>
+          <td fxFlex="60%">
+            <tr>
+              <td fxFlex="30%">Other Obligations</td>
+              <td fxFlex="60%">
+                <input matInput type="text" class="table-fieldText"  formControlName="otherobligations">
+              </td>
+              <td  fxFlex="10%"></td>
+            </tr>
+          </td>
+          <td fxFlex="20%" class='table-rightCell'>
+            <tr class="table-inputpeach">
+              <input matInput  formControlName="expotherloans" (change)="reCalculate()">
+            </tr>
+          </td>
+        </tr>
+        <tr>
+          <td fxFlex="20%" class='table-h3'>Net Disposable surplus  of Family (E - F)</td>
+          <td fxFlex="60%" class='data'>&nbsp;</td>
+          <td fxFlex="20%" class='table-inputblue'>
+            <input matInput readonly formControlName="totnetdispfamily">
+          </td>
+        </tr>
+
+      </table>
+    </div>
+    <BR />
+
+    <div fxLayout="row" class="margin-t" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="2%">
+      <button mat-raised-button matStepperPrevious>
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;&nbsp;
+        Previous
+      </button>
+      <button mat-raised-button matStepperNext>
+        Next&nbsp;&nbsp;
+        <fa-icon icon="arrow-right"></fa-icon>
+      </button>
+    </div>
+
+
+  </div>
+</form>

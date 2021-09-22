@@ -1,0 +1,12 @@
+@import "~@angular/material/theming";
+
+@mixin chitgroups-view-component-theme($theme) {
+  $primary: map-get($theme, primary);
+  mifosx-chitgroups-view {
+    .chitgroup-card {
+      .header {
+        background-color: mat-color($primary, 500);
+      }
+    }
+  } 
+}

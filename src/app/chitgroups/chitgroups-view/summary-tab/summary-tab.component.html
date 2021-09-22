@@ -1,0 +1,68 @@
+
+  <div class="tab-container mat-typography">
+
+
+    <h3>Summary</h3>
+  <div fxLayout="row" fxLayoutGap="32px" class="performance-history-container1">
+    <p>
+      Current Status : {{summary[0].status === 10? "Planning ": summary[0].status === 20? "Running ": "CLOSED "}} <br />
+      <br />
+      Start Date : {{summary[0].startDate}} <br />
+      <br />
+      Last Bid Amount : {{summary[0].bidAmount}} <br />
+      <br />
+     
+    </p>
+    <br />
+    <br />
+    <p class="h4">
+      Current Bid Date : {{summary[0].bidDate}} <br />
+      <!-- Current Cycle : {{summary[0].currentCycle}} <br /> -->
+      <br />
+      Chit Amount  : {{summary[0].chitValue}} <br />
+      <br />
+      <!-- this.datePipe.transform(new Date(), dateFormat), -->
+      Next Bid Date : {{summary[0].nextBidDate | date}} <br />
+    </p>
+  </div>
+  
+  <div class="mat-elevation-z8">
+      <h3 class="h3"><strong>Group Bidding History</strong></h3>
+    <table mat-table [dataSource]="dataSource" >
+
+     <ng-container matColumnDef="chitNumber">
+        <th mat-header-cell *matHeaderCellDef> Ticket Number </th>
+        <td mat-cell *matCellDef="let summary"> {{ summary.chitNumber }} </td>
+        
+      </ng-container> 
+
+      <ng-container matColumnDef="winnerName">
+        <th mat-header-cell *matHeaderCellDef > Winner Name </th>
+        <td mat-cell *matCellDef="let summary"> {{ summary.winnerName }} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="bidAmount">
+        <th mat-header-cell *matHeaderCellDef> Bid Amount/Bid Percentage </th>
+        <td mat-cell *matCellDef="let summary"> {{ summary.bidAmount }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="currentCycle">
+        <th mat-header-cell *matHeaderCellDef> Bid Cycle </th>
+        <td mat-cell *matCellDef="let summary"> {{ summary.currentCycle }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="bidDate">
+        <th mat-header-cell *matHeaderCellDef> Date of Bidding </th>
+        <td mat-cell *matCellDef="let summary"> {{ summary.bidDate }} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="select-row" [routerLink]="[row.id]"></tr>
+      
+    </table>
+    
+  </div>
+
+    </div>
+
+

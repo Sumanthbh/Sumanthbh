@@ -1,0 +1,102 @@
+<div class="add-guarantor-container">
+
+  <form [formGroup]="addGuarantorForm" (ngSubmit)="submit()">
+
+    <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="start center">
+
+      <mat-form-field fxFlex="calc(25%)">
+        <mat-label>Select</mat-label>
+        <mat-select formControlName="typeEnum">
+          <mat-option *ngFor="let enumType of enumTypeOption" [value]="enumType.value">
+            {{ enumType.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field fxFlex="calc(25%)">
+        <mat-label>Relationship</mat-label>
+        <mat-select formControlName="ClientRelationshipId">
+          <mat-option *ngFor="let relation of clientTemplateDropdown.familyMemberOptions.relationshipIdOptions"
+            [value]="relation.id">
+            {{ relation.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field fxFlex="calc(25%)">
+        <mat-label>Name</mat-label>
+        <input formControlName="firstName" matInput />
+      </mat-form-field>
+      <mat-form-field fxFlex="calc(25%)">
+        <mat-label>Date Of Birth</mat-label>
+        <input matInput [max]="maxDate" [matDatepicker]="datePicker" formControlName="dob">
+        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+        <mat-datepicker #datePicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field fxFlex="calc(25%)">
+        <mat-label>Mobile Number</mat-label>
+        <input type="number" matInput formControlName="Phone" maxLength="6">
+        <mat-error *ngIf="addGuarantorForm.controls.Phone.hasError('pattern')">
+           Mobile Number <strong>has to be</strong> 10 digit long
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="calc(25%)">
+        <mat-label>Educational Qualification</mat-label>
+        <mat-select matInput formControlName="qualification">
+          <mat-option *ngFor="let qualification of clientTemplateDropdown.educationOptions"
+            [value]="qualification.id">
+            {{ qualification.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field fxFlex="calc(25%)">
+        <mat-label>Profession </mat-label>
+        <mat-select matInput formControlName="profession">
+          <mat-option *ngFor="let profession of clientTemplateDropdown.professionOptions" [value]="profession.id">
+            {{ profession.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field fxFlex="calc(25%)">
+        <mat-label>Address Line 1</mat-label>
+        <input formControlName="Address1" matInput />
+      </mat-form-field>
+      <mat-form-field fxFlex="calc(25%)">
+        <mat-label>Address Line 2</mat-label>
+        <input formControlName="Address2" matInput />
+      </mat-form-field>
+      <mat-form-field fxFlex="calc(25%)">
+        <mat-label>City</mat-label>
+        <input formControlName="city" matInput />
+      </mat-form-field>
+      <mat-form-field fxFlex="calc(25%)">
+        <mat-label>State</mat-label>
+        <mat-select  formControlName="state">
+          <mat-option *ngFor="let state of clientTemplateDropdown.address.stateProvinceIdOptions" [value]="state.name">
+            {{ state.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field fxFlex="calc(25%)">
+        <mat-label>Country</mat-label>
+        <mat-select  formControlName="country">
+          <mat-option *ngFor="let state of clientTemplateDropdown.address.countryIdOptions" [value]="state.name">
+            {{ state.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field fxFlex="calc(25%)">
+        <mat-label>Pin Code</mat-label>
+        <input type="number" matInput maxLength="6" formControlName="zip">
+        <mat-error *ngIf="addGuarantorForm.controls.zip.hasError('pattern')">
+          Pin Code <strong>has to be</strong> 6 digit long
+        </mat-error>
+      </mat-form-field>
+      <mat-checkbox formControlName="isActive" labelPosition="before" fxFlex="calc(30%)">Is Active?
+      </mat-checkbox>
+
+    </div>
+    <div fxLayout="row" fxLayoutGap="32px" fxLayoutAlign="center">
+      <button type="button" mat-raised-button [routerLink]="['../']">Cancel</button>
+      <button type="submit" mat-raised-button color="primary">Submit</button>
+    </div>
+  </form>
+</div>

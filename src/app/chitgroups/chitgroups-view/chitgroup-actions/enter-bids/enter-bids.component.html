@@ -1,0 +1,118 @@
+<!-- <div class="container m-b-20" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="20px" fxLayout.xs="column">
+
+  <button mat-raised-button color="primary" (click)="addBidRow()" *mifosxHasPermission="'CREATE_GROUP'">
+    <fa-icon icon="plus"></fa-icon>&nbsp;&nbsp;
+    Add a Bid
+  </button>
+</div> -->
+
+<div class="container">
+
+  <mat-card>
+    
+    <div fxFlexFill fxLayout="row wrap" fxLayoutGap="2%" fxLayoutAlign="space-around" fxLayout.lt-md="column">
+      <h3>Chit Name : {{ chitgroupData.name }}</h3>
+      <h3>Current Cycle : {{ chitgroupData.currentcycle }}</h3>
+      <h3>Chit Value : ₹ {{ formatMyNumber(chitgroupData.chitvalue) }}</h3>
+      <button mat-raised-button color="primary" (click)="addBidRow()" *mifosxHasPermission="'CREATE_GROUP'">
+        <fa-icon icon="plus"></fa-icon>&nbsp;&nbsp;
+        Add a Bid
+      </button>
+    </div>
+    
+    <form [formGroup]="biddingForm">
+
+      <mat-card-content>
+
+        <div style="border-width: 2px solid;" formArrayName="chitBidsFormArr" *ngFor="let chitBid of chitBidsFormArr.controls; let i = index;">
+
+          <div fxFlexFill style="border-width: 2px solid; border-color: red;" fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column" [formGroupName]="i">
+
+            <mat-form-field style="border-width: 2px solid; border-color: red;"  fxFlex="13%">
+              <mat-label>Chit Number</mat-label>
+              <mat-select required formControlName="subscriberId">
+                <mat-option *ngFor="let subs of subscribers" [value]="subs.id">
+                {{ subs.chitNumber + "-" + subs.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="chitBidsFormArr.at(i).controls.subscriberId.hasError('required')">
+                Chit Number is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <!-- <mat-form-field fxFlex="18%">
+              <mat-label>Client Name</mat-label>
+              <input required matInput formControlName="ClientName" type="number">
+              <mat-error *ngIf="chitBidsFormArr.at(i).controls.ClientName.hasError('required')">
+                Client Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field> -->
+
+            <mat-form-field fxFlex="10%">
+              <mat-label>Bid Amount</mat-label>
+              <input required matInput formControlName="bidAmount" type="number">
+              <mat-error *ngIf="chitBidsFormArr.at(i).controls.bidAmount.hasError('required')">
+                Bid Amount is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="12%">
+              <mat-label>Bid Discount</mat-label>
+              <input readonly disabled matInput type="text" [value]="calcDiscount(i)">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="12%">
+             <mat-label>Bid Date</mat-label>
+              <input matInput [max]="maxDateDob" [min]="minDateDob" [matDatepicker]="bidDatePicker" formControlName="bidDate">
+              <mat-error *ngIf="chitBidsFormArr.at(i).controls.bidDate.hasError('required')">
+                Field is <strong>required</strong>
+              </mat-error>
+              <mat-datepicker-toggle matSuffix [for]="bidDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #bidDatePicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="15%">
+              <mat-label>Bidder Participation</mat-label>
+              <mat-select required formControlName="bidderparticipation">
+                <mat-option *ngFor="let bidder of bidderOptions" [value]="bidder.id">
+                  {{ bidder.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="active-wrapper" fxFlex="8%">
+              <mat-checkbox formControlName="bidWon" class="active">Winning Bid?</mat-checkbox>
+            </div>
+
+            <div fxLayoutGap="2%" fxFlex="15%" class="options-wrapper">
+              <span *ngIf="bidRowStatus[i] === 'edit'">
+                <button mat-stroked-button color="primary" [disabled]="chitBidsFormArr.at(i).pristine" (click)="updateBid(i)"
+                  *mifosxHasPermission="'CREATE_GROUP'">
+                  Submit
+                </button>
+              </span>
+              <button mat-button *ngIf="bidRowStatus[i] === 'edit'" (click)="disableRow(i)">
+                Cancel
+              </button>
+              <button mat-icon-button color="primary" [disabled]="!biddingForm.get('chitBidsFormArr').at(i).valid" *ngIf="bidRowStatus[i] === 'new'" matTooltip="Add" matTooltipPosition="above" (click)="addBid(i)">
+                <fa-icon icon="plus" size="lg"></fa-icon>
+              </button>
+              <button type="button" color="primary" *ngIf="bidRowStatus[i] === 'disabled'" mat-icon-button matTooltip="Edit" matTooltipPosition="above" (click)="enableRow(i)">
+                <fa-icon icon="edit" size="lg"></fa-icon>
+              </button>
+              <button type="button" color="warn" mat-icon-button matTooltip="Delete" *mifosxHasPermission="'CREATE_GROUP'" matTooltipPosition="above" (click)="bidRowStatus[i] === 'new' ? removeNewBid(i) : deleteBid(i)">
+                <fa-icon icon="trash" size="lg"></fa-icon>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </mat-card-content>
+
+    </form>
+
+  </mat-card>
+
+</div>
